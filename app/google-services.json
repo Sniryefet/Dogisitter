@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1004932993666",
+    "firebase_url": "https://dogisitter-b69a8.firebaseio.com",
+    "project_id": "dogisitter-b69a8",
+    "storage_bucket": "dogisitter-b69a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004932993666:android:0033ee34590dbceba19a9b",
+        "android_client_info": {
+          "package_name": "com.sniryefet.Dogisitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004932993666-nnop1gu9ndbkv7ts8i9uprb4cdm670ek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdM8zfZ4cgQ6Gw-8ThPQE2rataQV6AC7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004932993666-nnop1gu9ndbkv7ts8i9uprb4cdm670ek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
