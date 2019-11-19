@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Executed when Sign in button pressed
     //listener from the xml file
-
     public void signInExistingUser(View v)   {
         attemptLogin();
     }
@@ -84,10 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                         showErrorDialog("There was an error signing in");
                     }else{
                          Log.d("DogisitterApp","Login was successful");
-//                        //go to the profile page of the admin/client
-//                        Intent intent= new Intent(LoginActivity.this,profile.class);
-//                        finish();
-//                        startActivity(intent);
+                        //go to the profile page of the admin/client
+                        Intent intent= new Intent(LoginActivity.this,AdminMainActivity.class);
+                        finish();
+                        startActivity(intent);
                     }
                 }
             });
@@ -103,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-
 
 
 }

@@ -18,6 +18,44 @@
         completions."
     </string>
     <string name="sample_message">Hello!</string>
+
+
+    <!--    Activity Register-->
     <string name="Admin">Admin</string>
     <string name="Client">Client</string>
+
+    <!--   Activity Admin Main-->
+    <string name="Welcome">Welcome !!!</string>
+    <string name="addTrip">Add Trip</string>
+    <string name="Edit">Edit</string>
+    <string name="gif_image">dog walker_gif</string>
+    <string name="pass_forget">Forget your password?</string>
+    <string name="image">logo image</string>
+    <string name="remember_box">Remember me</string>
+
+
+    <!--  Activity Add Trip  -->
+    <string name="create_a_trip">Create A Trip</string>
+
+    <string name="Trip_Name">Trip Name</string>
+    <string name="prompt_Trip_Name">Trip Name</string>
+
+    <string name="Meeting_Place">Meeting Place</string>
+    <string name="Prompt_Meeting_Place">Meeting Place</string>
+
+    <string name="Date">Date</string>
+    <string name="prompt_Date">Date</string>
+
+    <string name="Time">Time</string>
+    <string name="Prompt_Time">Time</string>
+
+    <string name="Duration">Duration</string>
+    <string name="Prompt_Duration">Duration</string>
+
+    <string name="Capacity">Capacity</string>
+    <string name="Prompt_Capacity">Capacity</string>
+
+    <string name="Description">Description</string>
+    <string name="Prompt_Description">Description</string>
+
 </resources>

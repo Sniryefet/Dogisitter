@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Constants
     public static final String DISPLAY_NAME_KEY = "username";
+    public static final String PERMISSION_KEY = "permission";
     public static final String CHAT_PREFS = "ChatPrefs";
 
     // UI references.
@@ -81,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
     }
     public void adminCheckBox(View v){
         if (mAdmin.isChecked()) {
@@ -93,7 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
         }else {
             mPermission = "";
         }
-
     }
     public void clientCheckBox(View v){
         if (mClient.isChecked()){
@@ -228,6 +227,7 @@ public class RegisterActivity extends AppCompatActivity {
         String displayName = mUsernameView.getText().toString();
         SharedPreferences pref= getSharedPreferences(CHAT_PREFS,0);
         pref.edit().putString(DISPLAY_NAME_KEY,displayName).apply();
+        pref.edit().putString(PERMISSION_KEY,mPermission).apply();
     }
 
 

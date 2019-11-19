@@ -31,7 +31,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
 
 
-
 }
 
 //tells the app to look at the json files
