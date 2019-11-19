@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.widget.Toast;
+import com.bumptech.glide.Glide; // For .gif files
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,14 +25,15 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ImageView imageView = (ImageView) findViewById(R.id.imageViewGif);
+        Glide.with(this).asGif().load(R.drawable.a_dog_walker_crop).into(imageView);
         mEmailView = findViewById(R.id.login_email);
         mPasswordView = findViewById(R.id.login_password);
 
