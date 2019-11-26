@@ -11,8 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddTripActivity" android:screenOrientation="portrait" ></activity>
-        <activity android:name=".AdminMainActivity" android:screenOrientation="portrait" />
+        <activity android:name=".TripsViewActivity"></activity>
+        <activity android:name=".TripViewActivity" />
+        <activity
+            android:name=".AddTripActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminMainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
