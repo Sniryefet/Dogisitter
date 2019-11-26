@@ -86,31 +86,15 @@ public class LoginActivity extends AppCompatActivity {
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
-        FirebaseUser user = mAuth.getCurrentUser();
-        userID = user.getUid();
         String password = mPasswordView.getText().toString();
         String email = mEmailView.getText().toString();
 
+        Log.d("DogisitterApp", "showDataArray: Email: " + email);
+        Log.d("DogisitterApp", "showDataArray: Password: " + password);
         //one of the field is blank
         if(password.length()<1 || email.length()<1) return;
 
         Toast.makeText(this,"Login In Progress...",Toast.LENGTH_SHORT).show();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    //User is sign in
-                    Log.d("DogisitterApp", "onAuthStateChange:sign_in: " + user.getUid());
-                }
-                else{
-                    //user is sign-out
-                    Log.d("DogisitterApp", "onAuthStateChange:sign_out");
-                }
-            }
-        };
 
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -121,38 +105,34 @@ public class LoginActivity extends AppCompatActivity {
                         if(!task.isSuccessful()){
                             Log.d("DogisitterApp","Login Failed "+task.getException());
                             showErrorDialog("There was an error signing in");
-                        }else{
-                            Log.d("DogisitterApp","Login was successful");
+                        }else {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            userID = user.getUid();
+                            Log.d("DogisitterApp", "Login was successful");
                             //go to the profile page of the admin/client
-                        }
-
-                        myRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                /**
-                                 * This method is called once with the initial value and again
-                                 * whenever data at this location is updated.
-                                 */
-                                ArrayList<String> userInfo = showData(dataSnapshot);
-                                Log.d("DogisitterApp", "showDataArray: Email: "+ userInfo.get(0));
-                                Log.d("DogisitterApp", "showDataArray: Name: "+ userInfo.get(1));
-                                Log.d("DogisitterApp", "showDataArray: Permission: "+ userInfo.get(2));
-                                Intent intent;
-                                if(userInfo.get(2) == "Admin"){
-                                    intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                                }else{
-                                    intent = new Intent(LoginActivity.this, TripsViewActivity.class);
+                            myRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    /**
+                                     * This method is called once with the initial value and again
+                                     * whenever data at this location is updated.
+                                     */
+                                    ArrayList<String> userInfo = showData(dataSnapshot);
+                                    Intent intent;
+                                    if (userInfo.get(2).equals("Admin"))
+                                        intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                                    else
+                                        intent = new Intent(LoginActivity.this, TripsViewActivity.class);
+                                    finish();
+                                    startActivity(intent);
                                 }
-                                finish();
-                                startActivity(intent);
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-
+                                }
+                            });
+                        }
                     }
                 });
 
@@ -167,13 +147,14 @@ public class LoginActivity extends AppCompatActivity {
             uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail());
             uInfo.setName(ds.child(userID).getValue(User.class).getName());
             uInfo.setPermission(ds.child(userID).getValue(User.class).getPermission());
-            Log.d("DogisitterApp", "showData: Email: "+ uInfo.getEmail());
-            Log.d("DogisitterApp", "showData: Name: "+ uInfo.getName());
-            Log.d("DogisitterApp", "showData: Permission: "+ uInfo.getPermission());
+            Log.d("DogisitterApp", "showData: Email: " + uInfo.getEmail());
+            Log.d("DogisitterApp", "showData: Name: " + uInfo.getName());
+            Log.d("DogisitterApp", "showData: Permission: " + uInfo.getPermission());
 
             array.add(uInfo.getEmail());
             array.add(uInfo.getName());
             array.add(uInfo.getPermission());
+
         }
         return array;
 
