@@ -36,6 +36,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
+    static User uInfo = new User();
     private FirebaseAuth mAuth;
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -110,17 +111,25 @@ public class LoginActivity extends AppCompatActivity {
                             userID = user.getUid();
                             Log.d("DogisitterApp", "Login was successful");
                             //go to the profile page of the admin/client
+                            //DatabaseReference mUsersRef = myRef.child("Users");
                             myRef.addValueEventListener(new ValueEventListener() {
+                                //Log.d("nowowow", "1");
+
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     /**
                                      * This method is called once with the initial value and again
                                      * whenever data at this location is updated.
                                      */
-                                    ArrayList<String> userInfo = showData(dataSnapshot);
+                                    Log.d("nowowow", "2");
+
+                                    ArrayList<String> userInfo = showData(dataSnapshot.child("/Users"));
+                                    Log.d("nowowow", "3");
+
                                     Intent intent;
-                                    if (userInfo.get(2).equals("Admin"))
+                                    if (userInfo.get(2).equals("Admin")){
                                         intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                                    }
                                     else
                                         intent = new Intent(LoginActivity.this, TripsViewActivity.class);
                                     finish();
@@ -143,18 +152,17 @@ public class LoginActivity extends AppCompatActivity {
         //User userInfo = new User();
         ArrayList<String> array = new ArrayList<>();
         for(DataSnapshot ds: dataSnapshot.getChildren()){
-            User uInfo = new User();
-            uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail());
-            uInfo.setName(ds.child(userID).getValue(User.class).getName());
-            uInfo.setPermission(ds.child(userID).getValue(User.class).getPermission());
-            Log.d("DogisitterApp", "showData: Email: " + uInfo.getEmail());
-            Log.d("DogisitterApp", "showData: Name: " + uInfo.getName());
-            Log.d("DogisitterApp", "showData: Permission: " + uInfo.getPermission());
-
-            array.add(uInfo.getEmail());
-            array.add(uInfo.getName());
-            array.add(uInfo.getPermission());
-
+            if(userID.equals(ds.getKey())) {
+                uInfo.setEmail(ds.getValue(User.class).getEmail());
+                uInfo.setName(ds.getValue(User.class).getName());
+                uInfo.setPermission(ds.getValue(User.class).getPermission());
+                Log.d("DogisitterApp", "showData: Email: " + uInfo.getEmail());
+                Log.d("DogisitterApp", "showData: Name: " + uInfo.getName());
+                Log.d("DogisitterApp", "showData: Permission: " + uInfo.getPermission());
+                array.add(uInfo.getEmail());
+                array.add(uInfo.getName());
+                array.add(uInfo.getPermission());
+            }
         }
         return array;
 

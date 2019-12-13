@@ -38,6 +38,7 @@
         android:textColor="#132CB9" />
 
     <GridView
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"

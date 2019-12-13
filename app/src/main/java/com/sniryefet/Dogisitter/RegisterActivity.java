@@ -24,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     // Constants
@@ -171,6 +173,8 @@ public class RegisterActivity extends AppCompatActivity {
         final String name = mUsernameView.getText().toString();
         final String email =mEmailView.getText().toString();
         final String permission=mPermission;
+        final ArrayList<String> trips = new ArrayList<>();
+
         String password =mPasswordView.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email,password)
@@ -186,7 +190,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         else{
                             //Creates user Object and user node in the Database
-                            User user = new User(name,email,permission);
+                            User user = new User(name,email,permission,trips);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
