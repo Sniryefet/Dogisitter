@@ -35,7 +35,6 @@ import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
-
     static User uInfo = new User();
     private FirebaseAuth mAuth;
     private EditText mEmailView;
@@ -121,10 +120,8 @@ public class LoginActivity extends AppCompatActivity {
                                      * This method is called once with the initial value and again
                                      * whenever data at this location is updated.
                                      */
-                                    Log.d("nowowow", "2");
 
                                     ArrayList<String> userInfo = showData(dataSnapshot.child("/Users"));
-                                    Log.d("nowowow", "3");
 
                                     Intent intent;
                                     if (userInfo.get(2).equals("Admin")){
