@@ -5,12 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.view.LayoutInflater;
 
 public class TripAdapter extends BaseAdapter {
     private  Context mContext;
+    private static LayoutInflater inflater=null;
 
     public TripAdapter(Context context){
         this.mContext = context;
+        inflater = ( LayoutInflater )context.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -32,8 +36,9 @@ public class TripAdapter extends BaseAdapter {
     public View getView(int i, View convertview, ViewGroup viewGroup) {
         TripsViewActivity tripView;
         if(convertview == null){
-          //  tripView = new TripsViewActivity(mContext);
-          //  tripView.setLayoutParam
+            //  tripView = new TripsViewActivity(mContext);
+            //  tripView.setLayoutParam
+            View itemView = inflater.inflate(R.layout.trip_item, null);
 
 
         }
