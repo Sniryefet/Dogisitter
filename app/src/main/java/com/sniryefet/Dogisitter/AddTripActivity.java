@@ -191,12 +191,20 @@ public class AddTripActivity extends AppCompatActivity {
 
                 }else{
 
+                }
+            }
+        });
+        FirebaseDatabase.getInstance().getReference("AdminTrips").child(userID).child(tripId)
+                .setValue(newTrip).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
 
+                }else{
 
                 }
             }
         });
-
     }
 
 
