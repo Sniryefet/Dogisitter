@@ -4,13 +4,12 @@ import java.util.ArrayList;
 public class User {
 
     private String name,email,permission;
-    private ArrayList<String> trips;
+    //private ArrayList<Trip> trips;
 
-    public User(String name, String email, String permission,ArrayList<String> trips) {
+    public User(String name, String email, String permission) {
         this.name = name;
         this.email = email;
         this.permission = permission;
-        this.trips = trips;
     }
 
     public User() {
@@ -41,11 +40,7 @@ public class User {
         this.permission = permission;
     }
 
-    public void addTrip (String t){
-        this.trips.add(t);
-    }
-    public void setTrips(ArrayList<String> trips) {
-        this.trips = trips;
-    }
+    //public void addTrip (Trip t){this.trips.add(t);}
+    //public void setTrips(ArrayList<Trip> trips) { this.trips = trips; }
 
 }
