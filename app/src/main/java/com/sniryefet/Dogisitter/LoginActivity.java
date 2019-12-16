@@ -65,26 +65,28 @@ public class LoginActivity extends AppCompatActivity {
         String checkbox = preferences.getString("remember","");
         String permission = preferences.getString("permission","");
         if(checkbox.equals("true")){
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.d("ayayayayay",permission+"133333333333");
+            Log.d("ayayayayay",permission+"000");
+
             if(permission.equals("Admin")) {
+                Log.d("ayayayayay",permission+"133333333333");
                 Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                Toast.makeText(this, "Logged In succesfully!",Toast.LENGTH_SHORT);
                 startActivity(intent);
+
+            }
+            else if(permission.equals("Client")){
+                Log.d("ayayayayay",permission+"133333333333");
+                Intent intent = new Intent(LoginActivity.this, TripsViewActivity.class);
+                Toast.makeText(this, "Logged In succesfully!",Toast.LENGTH_SHORT);
+                startActivity(intent);
+
             }
             else{
-                Intent intent = new Intent(LoginActivity.this, TripsViewActivity.class);
-                startActivity(intent);
+                Toast.makeText(this, "Please log in!",Toast.LENGTH_SHORT);
 
             }
         }
-        else if(checkbox.equals("false")){
-            Log.d("ayayayayay",permission+"233333333333");
 
-        }
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
