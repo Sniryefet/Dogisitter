@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -44,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String userID;
+    private CheckBox mRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,33 @@ public class LoginActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.login_email);
         mPasswordView = findViewById(R.id.login_password);
         userRef=FirebaseAuth.getInstance().getCurrentUser();
+        mRemember = findViewById(R.id.remember_button);
+
+        SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+        String checkbox = preferences.getString("remember","");
+        String permission = preferences.getString("permission","");
+        if(checkbox.equals("true")){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d("ayayayayay",permission+"133333333333");
+            if(permission.equals("Admin")) {
+                Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(LoginActivity.this, TripsViewActivity.class);
+                startActivity(intent);
+
+            }
+        }
+        else if(checkbox.equals("false")){
+            Log.d("ayayayayay",permission+"233333333333");
+
+        }
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -65,7 +97,27 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         mAuth=FirebaseAuth.getInstance();
+        mRemember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(compoundButton.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember","true");
+                    editor.putString("permission",uInfo.getPermission());
+                    editor.apply();
 
+                }
+                else if(!compoundButton.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember","false");
+                    editor.putString("permission",uInfo.getPermission());
+                    editor.apply();
+
+                }
+            }
+        });
     }
 
     // Executed when Sign in button pressed
