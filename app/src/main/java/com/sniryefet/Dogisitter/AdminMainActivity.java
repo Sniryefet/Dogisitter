@@ -52,6 +52,13 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
 
+    //onClick listener from xml file
+    public void editProfile(View v){
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
     public void edit(View view) {
         deletingNow = true;
 
