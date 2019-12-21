@@ -13,14 +13,14 @@
     <com.sniryefet.Dogisitter.ProportionalImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="151dp"
+        android:layout_height="100dp"
         android:adjustViewBounds="true"
+        android:onClick="uploadProfileImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/common_full_open_on_phone"
-        />
+        app:srcCompat="@drawable/common_full_open_on_phone" />
 
     <Button
         android:id="@+id/Back_Button"
@@ -67,4 +67,15 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/newDog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/New_Dog"
+        android:onClick="addNewDog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 </androidx.constraintlayout.widget.ConstraintLayout>

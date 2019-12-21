@@ -5,11 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -17,7 +21,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG =  "EditProfileActivity";
     private ArrayList<String> mNames= new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ImageView mUserImage;
+
+    private ImageView mProfileImage;
+    private static final int PICK_IMAGE=1;
+    private Uri mImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +35,53 @@ public class EditProfileActivity extends AppCompatActivity {
         //meanwhile loading random images from the web
         initImages();
 
-        mUserImage = findViewById(R.id.imageView);
-        mUserImage.setImageResource(R.drawable.sugarmountain);
+        mProfileImage = findViewById(R.id.imageView);
+        //mProfileImage.setImageResource(R.drawable.sugarmountain);
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,  int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode== PICK_IMAGE && resultCode == RESULT_OK){
+            mImageUri=data.getData();
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),mImageUri);
+                mProfileImage.setImageBitmap(bitmap);
+
+                //add Code here to load the picture to the database storage
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+    //onClick Listner from the xml file set on the image view
+    public void uploadProfileImage(View view){
+        Intent gallery = new Intent();
+        gallery.setType("image/*");
+        gallery.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(gallery,"Select Picture"),PICK_IMAGE);
+
+    }
+
+
+    //    onClick from the xml
+    public void backButton(View v){
+        // need to change it to the right page according to the user permission
+        Intent intent = new Intent(EditProfileActivity.this,AdminMainActivity.class);
+        finish();
+        startActivity(intent);
+
+    }
+
+    //onClick from the xml for adding new dog pic
+    public void addNewDog(View view){
 
     }
 
@@ -73,13 +124,5 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
 
-//    onClick from the xml
-    // ** Maybe the View import is not the right one because there was multiply to import View **
-    public void backButton(View v){
-        // need to change it to the right page according to the user permission
-        Intent intent = new Intent(EditProfileActivity.this,AdminMainActivity.class);
-        finish();
-        startActivity(intent);
 
-    }
 }

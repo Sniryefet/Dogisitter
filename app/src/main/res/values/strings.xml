@@ -63,5 +63,6 @@
 <!--    Activity Edit Profile-->
 
     <string name="Back_Button">Back</string>
+    <string name="New_Dog">New Dog</string>
 
 </resources>
