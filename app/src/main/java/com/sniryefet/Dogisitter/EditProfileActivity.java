@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -16,17 +17,25 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG =  "EditProfileActivity";
     private ArrayList<String> mNames= new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ImageView mUserImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        // look for the user image and animal's images in the database
+        //meanwhile loading random images from the web
         initImages();
+
+        mUserImage = findViewById(R.id.imageView);
+        mUserImage.setImageResource(R.drawable.sugarmountain);
+
+
     }
 
     private void initImages(){
-
+        //get the images from the right admin/client
         mImageUrls.add("https://thumbs.dreamstime.com/z/emilia-clarke-cannes-france-may-emilia-clarke-gala-screening-solo-star-wars-story-st-festival-de-cannes-%C2%A9-166810618.jpg");
         mNames.add("Emilia clarke");
 
