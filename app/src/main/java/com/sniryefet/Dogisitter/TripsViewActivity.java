@@ -52,7 +52,6 @@ public class TripsViewActivity extends AppCompatActivity {
                  * whenever data at this location is updated.
                  */
                  ArrayList<Trip> trips = pullData(dataSnapshot.child("/Trips"));
-                Log.d("getTripsTest: ", trips.toString()+ " | size: " + trips.size());
                  TripAdapter tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
                 itemView = (GridView) findViewById(R.id.gridview);
                 itemView.setAdapter(tAdapter);
@@ -84,29 +83,9 @@ public class TripsViewActivity extends AppCompatActivity {
         ArrayList<Trip> trips = new ArrayList<>();
         for(DataSnapshot ds: dataSnapshot.getChildren()){
             Trip trip = ds.getValue(Trip.class);
-            Log.d("TESTTESTTEST: ", " name:"+ trip.getTripName());
             trips.add(trip);
         }
         return trips;
     }
-
-
-
-//    private ArrayList<Trip> tripsData(DataSnapshot dataSnapshot) {
-//        //User userInfo = new User();
-//        ArrayList<Trip> array = new ArrayList<>();
-//        for(DataSnapshot ds: dataSnapshot.getChildren()){
-//                String name = ds.getValue(Trip.class).getTripName();
-//                String date = ds.getValue(Trip.class).getDate();
-//                String capacity = ds.getValue(Trip.class).getCapacity();
-//                String description = ds.getValue(Trip.class).getDescription();
-//                String duration = ds.getValue(Trip.class).getDuration();
-//                String time = ds.getValue(Trip.class).getTime();
-//                String place = ds.getValue(Trip.class).getMeetingPlace();
-//                Trip trip = new Trip(name, place, date, time, duration, capacity, description, userID);
-//                array.add(trip);
-//        }
-//        return array;
-//    }
 
 }

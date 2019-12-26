@@ -43,22 +43,9 @@ public class TripAdapter extends BaseAdapter {
         return i;
     }
 
-//    public class Holder
-//    {
-//        TextView tName;
-//        TextView tPlace;
-//        TextView tDate;
-//        TextView tHour;
-//        ImageView tLogo;
-//    }
     @Override
     public View getView(int position, View convertview, ViewGroup viewGroup) {
-//        Holder holder=new Holder();
         View itemView = new View(mContext);
-        //itemView = (itemView == null) ? inflater.inflate(R.layout.trip_item, null): itemView;
-        //  tripView = new TripsViewActivity(mContext);
-        //  tripView.setLayoutParam
-        //itemView = new View(mContext);
         itemView = inflater.inflate(R.layout.trip_item, null);
 
         ImageView tLogo = (ImageView) itemView.findViewById(R.id.logoUserItem);
