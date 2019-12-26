@@ -13,5 +13,7 @@
     <color name="light_green">#C358A28A</color>
     <color name="light_red">#E1BB3F3F</color>
     <color name="black_switch">#C6000000</color>
+    <color name="green_item_title">#61B772</color>
+
 
 </resources>

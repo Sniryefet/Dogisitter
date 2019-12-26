@@ -46,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    //OnClick listener on the CheckBoxes from the xml
-    public void toggleCheckBox(View v){
 
-
-
-    }
     public void adminCheckBox(View v){
         if (mAdmin.isChecked()) {
             mPermission = "Admin";
@@ -169,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createFirebaseUser(){
         final String name = mUsernameView.getText().toString();
-        final String email =mEmailView.getText().toString();
+        final String email = mEmailView.getText().toString().toLowerCase();
         final String permission=mPermission;
         String password =mPasswordView.getText().toString();
 
@@ -201,9 +195,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     }else{
                                         Log.d("Dogisitter","Registered successfully");
                                         Toast.makeText(RegisterActivity.this,
-                                                        "Registered successfully",
-                                                        Toast.LENGTH_SHORT)
-                                                        .show();
+                                                "Registered successfully",
+                                                Toast.LENGTH_SHORT)
+                                                .show();
                                     }
                                 }
                             });
