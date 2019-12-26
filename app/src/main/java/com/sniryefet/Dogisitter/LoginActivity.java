@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent = new Intent(LoginActivity.this, TripsViewActivity.class);
                                     finish();
                                     startActivity(intent);
-                                }
+                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {

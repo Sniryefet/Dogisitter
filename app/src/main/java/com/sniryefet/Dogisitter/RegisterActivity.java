@@ -46,7 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    //OnClick listener on the CheckBoxes from the xml
-    public void toggleCheckBox(View v){
 
-
-
-    }
     public void adminCheckBox(View v){
         if (mAdmin.isChecked()) {
             mPermission = "Admin";

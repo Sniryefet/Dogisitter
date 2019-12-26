@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1004932993666-6dl9imhdjqiott8obv1n98hqmsumde0c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sniryefet.Dogisitter",
+            "certificate_hash": "fc75e932e4dce543483fa50ac83331d175251037"
+          }
+        },
+        {
+          "client_id": "1004932993666-7975vajq2r5gem2q2a5d2nuq4bgc654b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sniryefet.Dogisitter",
+            "certificate_hash": "d38c5376b65b1b5bd15c96b3ff898a04a50a4e84"
+          }
+        },
+        {
+          "client_id": "1004932993666-9jo25p50d4b9pi0e734g1qtf9tpgjhr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sniryefet.Dogisitter",
+            "certificate_hash": "37afc34c1f218954fd3fa1d3df3b72ea2dbf3ec0"
+          }
+        },
+        {
           "client_id": "1004932993666-nnop1gu9ndbkv7ts8i9uprb4cdm670ek.apps.googleusercontent.com",
           "client_type": 3
         }

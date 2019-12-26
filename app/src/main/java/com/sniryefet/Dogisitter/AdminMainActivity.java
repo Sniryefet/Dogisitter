@@ -61,7 +61,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
     public void edit(View view) {
         deletingNow = true;
-
         Context context = getApplicationContext();
         CharSequence text = "Touch to delete a trip!";
         int duration = Toast.LENGTH_SHORT;
