@@ -47,6 +47,6 @@ dependencies {
 
 
 }
-//
+
 //tells the app to look at the json files
 apply plugin: 'com.google.gms.google-services'

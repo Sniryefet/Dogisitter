@@ -51,12 +51,12 @@ public class TripsViewActivity extends AppCompatActivity {
                  * This method is called once with the initial value and again
                  * whenever data at this location is updated.
                  */
-                 ArrayList<Trip> trips = pullData(dataSnapshot.child("/Trips"));
-                 TripAdapter tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
+                ArrayList<Trip> trips = pullData(dataSnapshot.child("/Trips"));
+                TripAdapter tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
                 itemView = (GridView) findViewById(R.id.gridview);
                 itemView.setAdapter(tAdapter);
 
-                // ************ On Click item **************
+                // **** On Click item ******
                 itemView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

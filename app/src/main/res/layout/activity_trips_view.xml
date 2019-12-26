@@ -8,37 +8,37 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".TripsViewActivity">
-    <SearchView
-        android:layout_width="wrap_content"
-        android:layout_height="66dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="-1dp"
-        android:layout_marginRight="-1dp"
-        android:queryHint="Trips near me now" />
+        <SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="51dp"
+            android:layout_marginEnd="-1dp"
+            android:layout_marginRight="-1dp"
+            android:queryHint="Trips near me now" />
 
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="402dp"
-        android:layout_height="587dp"
-        android:layout_marginTop="135dp"
-        android:columnWidth="180dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:stretchMode="spacingWidthUniform"
-        android:verticalSpacing="24dp" />
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="402dp"
+            android:layout_height="587dp"
+            android:layout_marginTop="135dp"
+            android:columnWidth="180dp"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="24dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="67dp"
-        android:layout_height="51dp"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/logo_on_title" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="67dp"
+            android:layout_height="51dp"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/logo_on_title" />
 
 </RelativeLayout>

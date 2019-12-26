@@ -45,3 +45,4 @@ public class User {
     //public void setTrips(ArrayList<Trip> trips) { this.trips = trips; }
 
 }
+///////
