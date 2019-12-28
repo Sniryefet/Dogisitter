@@ -299,7 +299,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 // if so, Load it
               if(!(pathToPicture.equals(""))){
                   Log.d(TAG,"snir image view: "+pathToPicture+"");
-                  Picasso.get().load(pathToPicture).rotate(90).into(mProfileImage);
+                  Picasso.get()
+                          .load(pathToPicture)
+                          .fit()
+                          .into(mProfileImage);
                   mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
               }
 
