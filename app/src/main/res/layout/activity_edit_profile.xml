@@ -6,14 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfileActivity"
-    android:background="#f2f2f2">
+    tools:context=".EditProfileActivity">
 
 
-    <com.sniryefet.Dogisitter.ProportionalImageView
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         android:adjustViewBounds="true"
         android:onClick="uploadProfileImage"
         app:layout_constraintEnd_toEndOf="parent"
