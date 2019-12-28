@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,22 +26,23 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private static final String TAG =  "dEditProfileActivity";
-    private ArrayList<String> mNames= new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
     private boolean mProfileImageIndicator=true;
 
     private ImageView mProfileImage;
@@ -56,9 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private String mUserID= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     // ~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~
-    private List<UploadImage> mUploads;
+    private ArrayList<UploadImage> mUploads;
     private RecyclerView mRecyclerView;
-    private DatabaseReference mDatabaseRef;
     private RecyclerViewAdapter mAdapter;
 
 
@@ -73,11 +74,11 @@ public class EditProfileActivity extends AppCompatActivity {
         mDatabaseRefProfile = FirebaseDatabase.getInstance().getReference("ProfileImages");
         mDatabaseRefDogs = FirebaseDatabase.getInstance().getReference("DogsImages");
 
-        // look for the user image and animal's images in the database
-        //meanwhile loading random images from the web
-        initImages();
-
         mProfileImage = findViewById(R.id.imageView);
+
+        mAddDog=findViewById(R.id.newDog);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         //TO DO:
         //Load the profile image for the current user
@@ -87,13 +88,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //check if this connections is needed
         //might not be needed since this button activates from the xml
-        mAddDog=findViewById(R.id.newDog);
 
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        mRecyclerView = findViewById(R.id.recyclerView);
         //mRecyclerView.setHasFixedSize(true); suppose to increase performance
 
+
+        initRecyclerView();
+        initProfileImage();
 
     }
 
@@ -186,7 +188,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             Log.d(TAG,"Enter Upload file");
 
-            StorageReference fileReference= mStorageRef
+            final StorageReference fileReference= mStorageRef
                     .child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
 
             Log.d(TAG,System.currentTimeMillis()+"."+getFileExtension(mImageUri));
@@ -200,26 +202,34 @@ public class EditProfileActivity extends AppCompatActivity {
 
                     mProgressDialog.dismiss ();
                     Toast.makeText(EditProfileActivity.this, "File Uploaded ", Toast. LENGTH_LONG ).show();
-                    UploadImage uploadImage = new UploadImage(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
 
-                    if(mProfileImageIndicator) {
-                        mDatabaseRef.child(mUserID).setValue(uploadImage);
-                    }else{
-                        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CHECK IF THE KEY IS WORKING ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                        String dogPicID = mDatabaseRef.child(mUserID).push().getKey();
-                        mDatabaseRef.child(mUserID).child(dogPicID).setValue(uploadImage)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Log.d(TAG,"Add picture to database succeeded");
-                                        }else{
-                                            Log.d(TAG,"Add picture to database failed");
-                                        }
-                                    } // END onComplete
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            UploadImage uploadImage = new UploadImage(uri.toString());
 
-                                }); //END addOnCompleteListener
-                    }// END if-else of the indicator
+                            if(mProfileImageIndicator) {
+                                mDatabaseRef.child(mUserID).setValue(uploadImage);
+                            }else{
+                                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CHECK IF THE KEY IS WORKING ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                String dogPicID = mDatabaseRef.child(mUserID).push().getKey();
+                                mDatabaseRef.child(mUserID).child(dogPicID).setValue(uploadImage)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Log.d(TAG,"Add picture to database succeeded");
+                                                }else{
+                                                    Log.d(TAG,"Add picture to database failed");
+                                                }
+                                            } // END onComplete
+
+                                        }); //END addOnCompleteListener
+                            }// END if-else of the indicator
+                        }
+                    });
+
+
                     mProgressDialog.dismiss ();
 
                 }//END onSuccess
@@ -246,48 +256,60 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-
-    private void initImages(){
-        //get the images from the right admin/client
-        mImageUrls.add("https://thumbs.dreamstime.com/z/emilia-clarke-cannes-france-may-emilia-clarke-gala-screening-solo-star-wars-story-st-festival-de-cannes-%C2%A9-166810618.jpg");
-        mNames.add("Emilia clarke");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/majestic-autumn-fall-landscape-red-deer-stag-cervus-elaphus-foreground-vibrant-forest-lake-background-stunning-epic-166661560.jpg");
-        mNames.add("deer");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/schauzer-sam-166501063.jpg");
-        mNames.add("dog");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/tourists-skiing-bukovel-bukovel-ivano-frankivsk-ukraine-february-ski-resort-bukovel-carpathian-mountains-ukraine-166427242.jpg");
-        mNames.add("ski");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/gorilla-dangerous-look-dark-background-166410063.jpg");
-        mNames.add("gorilla");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/green-snake-zoo-liberec-morelia-viridis-tree-python-best-photo-detail-166406538.jpg");
-        mNames.add("snake");
-
-        mImageUrls.add("https://thumbs.dreamstime.com/z/little-red-kitten-wearing-knitted-scarf-sits-snow-winter-little-red-kitten-wearing-knitted-scarf-sits-snow-166301940.jpg");
-        mNames.add("cat");
-
-        initRecyclerView();
-    }
     private void initRecyclerView(){
-
-        Log.d(TAG,"initRecyeclerView: ");
-
+        mUploads = new ArrayList<>();
         LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        RecyclerView recyclerView= findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(layoutManager);
-        //call init images
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(mNames,mImageUrls,this);
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        //retrieve all the owner dogs
+        mDatabaseRefDogs.child(mUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG,mDatabaseRefDogs+"/"+mUserID);
+                for (DataSnapshot dogSnapshot : dataSnapshot.getChildren()){
+                    UploadImage upload = dogSnapshot.getValue(UploadImage.class);
+                    mUploads.add(upload);
+                }
+                Log.d(TAG,"manage to upload "+mUploads.size()+" images");
+                mAdapter = new RecyclerViewAdapter(mUploads,EditProfileActivity.this);
+                mRecyclerView.setAdapter(mAdapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(EditProfileActivity.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
-    private void init(){
+
+    private void initProfileImage(){
+
+        mDatabaseRefProfile.child(mUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              String pathToPicture="";
+              pathToPicture = dataSnapshot.getValue(UploadImage.class).getmImageUrl();
 
 
+              //check if the user has already an profile image
+                // if so, Load it
+              if(!(pathToPicture.equals(""))){
+                  Log.d(TAG,"snir image view: "+pathToPicture+"");
+                  Picasso.get().load(pathToPicture).rotate(90).into(mProfileImage);
+                  mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
+              }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,13 +21,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter
         extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<String> mNames= new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private static final String TAG = "dRecyclerViewAdapter";
+    private ArrayList<UploadImage> mImageUrls = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<String> mNames, ArrayList<String> mImageUrls, Context mContext) {
-        this.mNames = mNames;
+    public RecyclerViewAdapter( ArrayList<UploadImage> mImageUrls, Context mContext) {
         this.mImageUrls = mImageUrls;
         this.mContext = mContext;
     }
@@ -36,45 +35,37 @@ public class RecyclerViewAdapter
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG,"onCreateViewHolder:called");
         View view = LayoutInflater.from(
-                parent.getContext())
+                mContext)
                 .inflate(R.layout.circle_image_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.d(TAG,"onBindViewHolder:called");
-        Glide.with(mContext)
-                .asBitmap()
-                .load(mImageUrls.get(position))
+        UploadImage currentUpload=mImageUrls.get(position);
+
+        Picasso.get()
+                .load(currentUpload.getmImageUrl())
+                .fit()
+                .rotate(90)
                 .into(holder.image);
 
-        holder.name.setText(mNames.get(position));
 
-        holder.image.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Log.d(TAG,"onClick: clicked on an image: "+mNames.get(position));
-                Toast.makeText(mContext,mNames.get(position),Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
     @Override
     public int getItemCount() {
-        return mNames.size();
+        return mImageUrls.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView image;
-        TextView name;
 
         public ViewHolder(View itemView){
             super(itemView);
-            image = itemView.findViewById(R.id.image);
-            name = itemView.findViewById(R.id.name);
+            image = itemView.findViewById(R.id.circle_image); // MAYBE NOT THE RIGHT LINKAGE
 
         }
     }

@@ -25,24 +25,8 @@
                 android:layout_height="90dp"
                 android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/image"
+                android:id="@+id/circle_image"
                 android:src="@drawable/ic_launcher_background"/>
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/Edit"
-                android:layout_below="@+id/image"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="5dp"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="8sp"
-                android:autoSizeMaxTextSize="15sp">
-
-            </TextView>
 
         </RelativeLayout>
 
