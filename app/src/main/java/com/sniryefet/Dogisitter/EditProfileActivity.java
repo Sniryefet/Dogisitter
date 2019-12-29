@@ -94,8 +94,9 @@ public class EditProfileActivity extends AppCompatActivity {
         //mRecyclerView.setHasFixedSize(true); suppose to increase performance
 
 
-        initRecyclerView();
-        initProfileImage();
+        loadRecyclerView();
+        loadProfileImage();
+        loadUserDetails();
 
     }
 
@@ -256,7 +257,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void initRecyclerView(){
+    private void loadRecyclerView(){
         mUploads = new ArrayList<>();
         LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -286,7 +287,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void initProfileImage(){
+    private void loadProfileImage(){
 
         mDatabaseRefProfile.child(mUserID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -314,6 +315,38 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void loadUserDetails(){
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(mUserID);
+        String Name="";
+        String Age="";
+        String Email="";
+        String phoneNumber="";
+        String Address="";
+        String instagram="";
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+//        TO DO :
+//      1. Load the Email and the Name from the user table
+//      2. Load Address check if it exists at all
+
+//
+//
     }
 
 

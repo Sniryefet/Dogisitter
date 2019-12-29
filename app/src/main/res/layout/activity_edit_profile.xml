@@ -38,7 +38,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgUser"
@@ -51,13 +51,13 @@
 
 
             <TextView
-                android:id="@+id/tv_address"
+                android:id="@+id/profileAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_name"
+                android:layout_below="@+id/profileName"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="sans-serif"
-                android:text="new york, usa"
+                android:text="15/02/1981"
                 android:textAllCaps="true"
                 android:textColor="@color/address"
                 android:textSize="14sp" />
@@ -140,6 +140,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/profileEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
@@ -169,6 +170,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/profilePhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
@@ -193,15 +195,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Twitter"
+                        android:text="Address"
                         android:textColor="@color/headings"
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/profileAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="twitter"
+                        android:text="Address"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -222,7 +225,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Facebook"
+                        android:text="Instagram"
                         android:textColor="@color/headings"
                         android:textSize="13sp" />
 
@@ -230,7 +233,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="facebook.com/joeytrib"
+                        android:text="instagram.com/joey.tribbiani/"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
