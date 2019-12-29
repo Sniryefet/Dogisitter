@@ -72,6 +72,17 @@
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_settings" />
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:onClick="backButton"
+                app:srcCompat="@drawable/ic_keyboard_return_black_24dp" />
+
         </RelativeLayout>
 
         <LinearLayout
