@@ -33,7 +33,7 @@ public class AdminMainActivity extends AppCompatActivity {
         mDatabaseReference= FirebaseDatabase.getInstance().getReference();
 
     }
-
+//
 
     private void setDisplayName(){
         SharedPreferences prefs= getSharedPreferences(RegisterActivity.CHAT_PREFS,MODE_PRIVATE);
