@@ -74,9 +74,9 @@ public class EditProfileActivity extends AppCompatActivity {
         mDatabaseRefProfile = FirebaseDatabase.getInstance().getReference("ProfileImages");
         mDatabaseRefDogs = FirebaseDatabase.getInstance().getReference("DogsImages");
 
-        mProfileImage = findViewById(R.id.imageView);
+        mProfileImage = findViewById(R.id.userProfileImage);
 
-        mAddDog=findViewById(R.id.newDog);
+        //mAddDog=findViewById(R.id.newDog);
 
         mRecyclerView = findViewById(R.id.recyclerView);
 
@@ -301,6 +301,7 @@ public class EditProfileActivity extends AppCompatActivity {
                   Log.d(TAG,"snir image view: "+pathToPicture+"");
                   Picasso.get()
                           .load(pathToPicture)
+                          .transform(new CircleTransform())
                           .fit()
                           .into(mProfileImage);
                   mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
@@ -314,7 +315,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }
