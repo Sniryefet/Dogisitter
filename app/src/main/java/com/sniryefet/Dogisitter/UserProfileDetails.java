@@ -6,10 +6,7 @@ public class UserProfileDetails {
    private String Email;
    private String phoneNumber;
    private String Address;
-
-
-
-    private String instagram;
+   private String instagram;
 
 
    public UserProfileDetails(){

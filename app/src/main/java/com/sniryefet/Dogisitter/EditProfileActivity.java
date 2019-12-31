@@ -19,6 +19,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,25 +43,34 @@ import java.util.ArrayList;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    //DEBUG TOOL
     private static final String TAG =  "dEditProfileActivity";
-    private boolean mProfileImageIndicator=true;
 
+    //IMAGE LOADING VARI' AND DATABASE REFS
+    private boolean mProfileImageIndicator=true;
     private ImageView mProfileImage;
     private static final int PICK_IMAGE=1;
     private Uri mImageUri;
-
-    private Button mAddDog;
-
     private StorageReference mRefProfileImages;
     private StorageReference mRefDogsImages;
     private DatabaseReference mDatabaseRefProfile;
     private DatabaseReference mDatabaseRefDogs;
     private String mUserID= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    // ~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~
+    // RECYCLER VIEW LIST,ADAPTER AND LINKAGE TO THE XML
     private ArrayList<UploadImage> mUploads;
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mAdapter;
+
+    //TEXT VIEWS AND BUTTONS
+    private Button mAddDog;
+    private TextView mName;
+    private TextView mBirthDate;
+    private TextView mEmail;
+    private TextView mPhone;
+    private TextView mAddress;
+    private TextView mInstagram;
+
 
 
     @Override
@@ -68,6 +78,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        //
         mRefProfileImages = FirebaseStorage.getInstance().getReference("ProfileImages");
         mRefDogsImages = FirebaseStorage.getInstance().getReference("DogsImages");
 
@@ -78,22 +89,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //mAddDog=findViewById(R.id.newDog);
 
+        // TEXT VIEW LINKAGE
         mRecyclerView = findViewById(R.id.recyclerView);
-
-        //TO DO:
-        //Load the profile image for the current user
-        //Load the images of the dogs for the current user
-        //Load the details of the current userProfileDetails(new table), name ,age ,shit
-
-
-        //check if this connections is needed
-        //might not be needed since this button activates from the xml
+        mName= findViewById(R.id.profileName);
+        mBirthDate=findViewById(R.id.profileBirthDate);
+        mEmail=findViewById(R.id.profileEmail);
+        mPhone=findViewById(R.id.profilePhone);
+        mAddress=findViewById(R.id.profileAddress);
+        mInstagram=findViewById(R.id.profileInstagram);
 
 
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
         //mRecyclerView.setHasFixedSize(true); suppose to increase performance
 
-
+        //LOADING THE PAGE WITH THE DATA FROM FIREBASE
         loadRecyclerView();
         loadProfileImage();
         loadUserDetails();
@@ -319,16 +328,34 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void loadUserDetails(){
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(mUserID);
-        String Name="";
-        String Age="";
-        String Email="";
-        String phoneNumber="";
-        String Address="";
-        String instagram="";
 
+//        Check if it is possible when there is no node exists in that name
+        DatabaseReference userDetails=FirebaseDatabase.getInstance().getReference("UserProfileDetails");
+
+        userDetails = userDetails.child(mUserID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name="";
+                String birthDate="";
+                String email="";
+                String phoneNumber="";
+                String address="";
+                String instagram="";
+                name = dataSnapshot.getValue(UserProfileDetails.class).getName();
+                birthDate= dataSnapshot.getValue(UserProfileDetails.class).getBirthDate();
+                email= dataSnapshot.getValue(UserProfileDetails.class).getEmail();
+                phoneNumber=dataSnapshot.getValue(UserProfileDetails.class).getPhoneNumber();
+                address=dataSnapshot.getValue(UserProfileDetails.class).getAddress();
+                instagram=dataSnapshot.getValue(UserProfileDetails.class).getInstagram();
+
+                mName.setText(name);
+                mBirthDate.setText(birthDate);
+                mEmail.setText(email);
+                mPhone.setText(phoneNumber);
+                mAddress.setText(address);
+                mInstagram.setText(instagram);
+
 
             }
 
