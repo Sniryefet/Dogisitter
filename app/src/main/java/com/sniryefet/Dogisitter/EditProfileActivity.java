@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -72,22 +73,26 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView mInstagram;
 
 
+    //View flipper
+    private ViewFlipper mViewFlipper;
+    boolean Edit =false;
+    private Button mSaveChanges;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        //
+        //LINK DATABASE REFS
         mRefProfileImages = FirebaseStorage.getInstance().getReference("ProfileImages");
         mRefDogsImages = FirebaseStorage.getInstance().getReference("DogsImages");
 
         mDatabaseRefProfile = FirebaseDatabase.getInstance().getReference("ProfileImages");
         mDatabaseRefDogs = FirebaseDatabase.getInstance().getReference("DogsImages");
 
-        mProfileImage = findViewById(R.id.userProfileImage);
 
-        //mAddDog=findViewById(R.id.newDog);
 
         // TEXT VIEW LINKAGE
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -99,6 +104,11 @@ public class EditProfileActivity extends AppCompatActivity {
         mInstagram=findViewById(R.id.profileInstagram);
 
 
+        //CLICKABLE IMAGE VIEWS AND BUTTONS LINKAGE LINKAGE
+        //mAddDog=findViewById(R.id.newDog);
+        mProfileImage = findViewById(R.id.userProfileImage);
+        mViewFlipper = findViewById(R.id.view_flipper);
+        mSaveChanges = findViewById(R.id.SAVE_CHANGES_BUTTON); // PROBABLY NOT NEEDED SINCE ACTIVATED THROUGH XML
 
         //mRecyclerView.setHasFixedSize(true); suppose to increase performance
 
@@ -172,6 +182,17 @@ public class EditProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(EditProfileActivity.this,AdminMainActivity.class);
         finish();
         startActivity(intent);
+
+    }
+
+    //onClick
+    public void editButton(View v){
+        mViewFlipper.setDisplayedChild(1);
+    }
+
+    //onClick
+    public void saveChanges(View v){
+        mViewFlipper.setDisplayedChild(0);
 
     }
 
@@ -365,15 +386,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-//        TO DO :
-//      1. Load the Email and the Name from the user table
-//      2. Load Address check if it exists at all
-
-//
-//
     }
 
 
