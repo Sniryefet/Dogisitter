@@ -223,8 +223,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 ,email,phoneNumber,address,instagram);
 
         //CAUSING ERROR RETURNING ME BACK TO THE ADMIN MAIN
+        Log.d(TAG,"BEFORE setValue ");
         mDatabaseRefUserDetails.setValue(userProfileDetails);
-
+        Log.d(TAG,"AFTER setValue");
         //UPDATE TextViews before flipping back
         mEmail.setText(email);
         mPhone.setText(phoneNumber);

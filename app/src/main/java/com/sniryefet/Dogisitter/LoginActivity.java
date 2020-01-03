@@ -124,8 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Executed when Sign in button pressed
     //listener from the xml file
-    public void signInExistingUser(View v)   {
-        attemptLogin();
+    public void signInExistingUser(View v)   { attemptLogin();
     }
 
     // Executed when Register button pressed
@@ -154,7 +153,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         String perm;
                         if(!task.isSuccessful()){
                             Log.d("DogisitterApp","Login Failed "+task.getException());
@@ -165,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("DogisitterApp", "Login was successful");
                             //go to the profile page of the admin/client
                             //DatabaseReference mUsersRef = myRef.child("Users");
-                            myRef.addValueEventListener(new ValueEventListener() {
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 //Log.d("nowowow", "1");
 
                                 @Override
@@ -174,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                                      * This method is called once with the initial value and again
                                      * whenever data at this location is updated.
                                      */
-
+                                    Log.d("dEditProfileActivity","showData is called again");
                                     ArrayList<String> userInfo = showData(dataSnapshot.child("/Users"));
 
                                     Intent intent;
@@ -227,6 +225,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
 
 
 }
