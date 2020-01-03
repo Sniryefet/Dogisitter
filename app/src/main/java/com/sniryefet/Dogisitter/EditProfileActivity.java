@@ -83,8 +83,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     //View flipper
     private ViewFlipper mViewFlipper;
-    private Button mSaveChanges;
 
+
+    private String userName;
+    private String userEmail;
 
 
     @Override
@@ -124,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity {
         //mAddDog=findViewById(R.id.newDog);
         mProfileImage = findViewById(R.id.userProfileImage);
         mViewFlipper = findViewById(R.id.view_flipper);
-        mSaveChanges = findViewById(R.id.SAVE_CHANGES_BUTTON); // PROBABLY NOT NEEDED SINCE ACTIVATED THROUGH XML
+        //mSaveChanges = findViewById(R.id.SAVE_CHANGES_BUTTON); // PROBABLY NOT NEEDED SINCE ACTIVATED THROUGH XML
 
         //mRecyclerView.setHasFixedSize(true); suppose to increase performance
 
@@ -363,21 +365,25 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
               String pathToPicture="";
-              pathToPicture = dataSnapshot.getValue(UploadImage.class).getmImageUrl();
+              UploadImage uploadImage = dataSnapshot.getValue(UploadImage.class);
+              if(uploadImage!=null) {
+                  pathToPicture = uploadImage.getmImageUrl();
 
 
-              //check if the user has already an profile image
-                // if so, Load it
-              if(!(pathToPicture.equals(""))){
-                  Log.d(TAG,"snir image view: "+pathToPicture+"");
-                  Picasso.get()
-                          .load(pathToPicture)
-                          .transform(new CircleTransform())
-                          .fit()
-                          .into(mProfileImage);
-                  mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
+                  //check if the user has already an profile image
+                  // if so, Load it
+                  if (!(pathToPicture.equals(""))) {
+                      Log.d(TAG, "snir image view: " + pathToPicture + "");
+                      Picasso.get()
+                              .load(pathToPicture)
+                              .transform(new CircleTransform())
+                              .rotate(90)
+                              .fit()
+                              .into(mProfileImage);
+                      mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
+                  }
+                  //uses default image
               }
-
             }
 
             @Override
@@ -394,13 +400,10 @@ public class EditProfileActivity extends AppCompatActivity {
            ref.addValueEventListener(new ValueEventListener() {
                @Override
                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   String name = "";
-                   String email = "";
 
-                   name = dataSnapshot.getValue(UserProfileDetails.class).getName();
-                   email = dataSnapshot.getValue(UserProfileDetails.class).getEmail();
-                   mName.setText(name);
-                   mEmail.setText(email);
+                   userName = dataSnapshot.getValue(UserProfileDetails.class).getName();
+                   userEmail = dataSnapshot.getValue(UserProfileDetails.class).getEmail();
+
                }
 
                @Override
@@ -417,18 +420,22 @@ public class EditProfileActivity extends AppCompatActivity {
            userDetails.addValueEventListener(new ValueEventListener() {
                @Override
                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   String name = "";
+                   String name =userName;
                    String birthDate = "";
-                   String email = "";
+                   String email = userEmail;
                    String phoneNumber = "";
                    String address = "";
                    String instagram = "";
-                   name = dataSnapshot.getValue(UserProfileDetails.class).getName();
-                   birthDate = dataSnapshot.getValue(UserProfileDetails.class).getBirthDate();
-                   email = dataSnapshot.getValue(UserProfileDetails.class).getEmail();
-                   phoneNumber = dataSnapshot.getValue(UserProfileDetails.class).getPhoneNumber();
-                   address = dataSnapshot.getValue(UserProfileDetails.class).getAddress();
-                   instagram = dataSnapshot.getValue(UserProfileDetails.class).getInstagram();
+                   UserProfileDetails userProfileDetails= dataSnapshot.getValue(UserProfileDetails.class);
+
+                   if(userProfileDetails!=null) {
+                       //name = userProfileDetails.getName();
+                       birthDate = userProfileDetails.getBirthDate();
+                       email = userProfileDetails.getEmail();
+                       phoneNumber = userProfileDetails.getPhoneNumber();
+                       address = userProfileDetails.getAddress();
+                       instagram = userProfileDetails.getInstagram();
+                   }
 
                    mName.setText(name);
                    mBirthDate.setText(birthDate);
