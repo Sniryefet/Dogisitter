@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private StorageReference mRefDogsImages;
     private DatabaseReference mDatabaseRefProfile;
     private DatabaseReference mDatabaseRefDogs;
+    private DatabaseReference mDatabaseRefUserDetails;
     private String mUserID= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     // RECYCLER VIEW LIST,ADAPTER AND LINKAGE TO THE XML
@@ -72,10 +74,15 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextView mAddress;
     private TextView mInstagram;
 
+    private EditText mNameEditable;
+    private EditText mEmailEditable;
+    private EditText mPhoneEditable;
+    private EditText mAddressEditable;
+    private EditText mInstagramEditable;
+
 
     //View flipper
     private ViewFlipper mViewFlipper;
-    boolean Edit =false;
     private Button mSaveChanges;
 
 
@@ -92,16 +99,25 @@ public class EditProfileActivity extends AppCompatActivity {
         mDatabaseRefProfile = FirebaseDatabase.getInstance().getReference("ProfileImages");
         mDatabaseRefDogs = FirebaseDatabase.getInstance().getReference("DogsImages");
 
+        mDatabaseRefUserDetails= FirebaseDatabase.getInstance().getReference("UserProfileDetails").child(mUserID);
 
-
-        // TEXT VIEW LINKAGE
+        // TEXT && EDIT  VIEW LINKAGE
         mRecyclerView = findViewById(R.id.recyclerView);
+
         mName= findViewById(R.id.profileName);
         mBirthDate=findViewById(R.id.profileBirthDate);
+
         mEmail=findViewById(R.id.profileEmail);
+        mEmailEditable= findViewById(R.id.profileEmailEdit);
+
         mPhone=findViewById(R.id.profilePhone);
+        mPhoneEditable=findViewById(R.id.profilePhoneEdit);
+
         mAddress=findViewById(R.id.profileAddress);
+        mAddressEditable=findViewById(R.id.profileAddressEdit);
+
         mInstagram=findViewById(R.id.profileInstagram);
+        mInstagramEditable=findViewById(R.id.profileInstagramEdit);
 
 
         //CLICKABLE IMAGE VIEWS AND BUTTONS LINKAGE LINKAGE
@@ -192,11 +208,29 @@ public class EditProfileActivity extends AppCompatActivity {
 
     //onClick
     public void saveChanges(View v){
+        saveChangesToDatabase();
         mViewFlipper.setDisplayedChild(0);
 
     }
 
+//    UPDATE DATABASE OF THE USER CHANGES
+    private void saveChangesToDatabase(){
+        String email=mEmailEditable.getText().toString();
+        String phoneNumber=mPhoneEditable.getText().toString();
+        String address=mAddressEditable.getText().toString();
+        String instagram=mInstagramEditable.getText().toString();
+        UserProfileDetails userProfileDetails = new UserProfileDetails(mName.getText().toString(),mBirthDate.getText().toString()
+                ,email,phoneNumber,address,instagram);
 
+        //CAUSING ERROR RETURNING ME BACK TO THE ADMIN MAIN
+        mDatabaseRefUserDetails.setValue(userProfileDetails);
+
+        //UPDATE TextViews before flipping back
+        mEmail.setText(email);
+        mPhone.setText(phoneNumber);
+        mAddress.setText(address);
+        mInstagram.setText(instagram);
+    }
 
     //This file returns the extension of the file
     //we picked (https://www.youtube.com/watch?v=lPfQN-Sfnjw)
@@ -348,45 +382,62 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserDetails(){
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(mUserID);
 
 //        Check if it is possible when there is no node exists in that name
-        DatabaseReference userDetails=FirebaseDatabase.getInstance().getReference("UserProfileDetails");
+           DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Users").child(mUserID);
+           ref.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   String name = "";
+                   String email = "";
 
-        userDetails = userDetails.child(mUserID);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name="";
-                String birthDate="";
-                String email="";
-                String phoneNumber="";
-                String address="";
-                String instagram="";
-                name = dataSnapshot.getValue(UserProfileDetails.class).getName();
-                birthDate= dataSnapshot.getValue(UserProfileDetails.class).getBirthDate();
-                email= dataSnapshot.getValue(UserProfileDetails.class).getEmail();
-                phoneNumber=dataSnapshot.getValue(UserProfileDetails.class).getPhoneNumber();
-                address=dataSnapshot.getValue(UserProfileDetails.class).getAddress();
-                instagram=dataSnapshot.getValue(UserProfileDetails.class).getInstagram();
+                   name = dataSnapshot.getValue(UserProfileDetails.class).getName();
+                   email = dataSnapshot.getValue(UserProfileDetails.class).getEmail();
+                   mName.setText(name);
+                   mEmail.setText(email);
+               }
 
-                mName.setText(name);
-                mBirthDate.setText(birthDate);
-                mEmail.setText(email);
-                mPhone.setText(phoneNumber);
-                mAddress.setText(address);
-                mInstagram.setText(instagram);
+               @Override
+               public void onCancelled(@NonNull DatabaseError databaseError) {
+
+               }
+           });
 
 
-            }
+           DatabaseReference userDetails = FirebaseDatabase.getInstance().getReference("UserProfileDetails");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+           userDetails = userDetails.child(mUserID);
 
-            }
-        });
+           userDetails.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   String name = "";
+                   String birthDate = "";
+                   String email = "";
+                   String phoneNumber = "";
+                   String address = "";
+                   String instagram = "";
+                   name = dataSnapshot.getValue(UserProfileDetails.class).getName();
+                   birthDate = dataSnapshot.getValue(UserProfileDetails.class).getBirthDate();
+                   email = dataSnapshot.getValue(UserProfileDetails.class).getEmail();
+                   phoneNumber = dataSnapshot.getValue(UserProfileDetails.class).getPhoneNumber();
+                   address = dataSnapshot.getValue(UserProfileDetails.class).getAddress();
+                   instagram = dataSnapshot.getValue(UserProfileDetails.class).getInstagram();
 
-    }
+                   mName.setText(name);
+                   mBirthDate.setText(birthDate);
+                   mEmail.setText(email);
+                   mPhone.setText(phoneNumber);
+                   mAddress.setText(address);
+                   mInstagram.setText(instagram);
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError databaseError) {
+
+               }
+           });
+       }
 
 
 }

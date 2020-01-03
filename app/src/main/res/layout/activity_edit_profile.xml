@@ -116,6 +116,8 @@
             android:id="@+id/view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inAnimation="@android:anim/slide_in_left"
+            android:outAnimation="@android:anim/slide_out_right"
             android:layout_below="@+id/linlay1">
 
 
@@ -152,7 +154,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="joey@sharenofood.com"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -182,7 +183,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="+1-202-555-0157"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -212,7 +212,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="Address"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -242,7 +241,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="instagram.com/joey.tribbiani/"
                         android:textColor="#000000"
                         android:textSize="18sp" />
 
@@ -296,7 +294,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="joey@sharenofood.com"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -326,7 +323,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="+1-202-555-0157"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -356,7 +352,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="Address"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -386,7 +381,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="instagram.com/joey.tribbiani/"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
