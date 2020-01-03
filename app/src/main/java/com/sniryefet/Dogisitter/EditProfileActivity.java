@@ -203,6 +203,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
     //onClick
     public void editButton(View v){
+        mEmailEditable.setText(mEmail.getText().toString());
+        mPhoneEditable.setText(mPhone.getText().toString());
+        mAddressEditable.setText(mAddress.getText().toString());
+        mInstagramEditable.setText(mInstagram.getText().toString());
+
         mViewFlipper.setDisplayedChild(1);
     }
 
