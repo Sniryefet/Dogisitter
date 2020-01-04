@@ -47,7 +47,6 @@ public class RecyclerViewAdapter
         Picasso.get()
                 .load(currentUpload.getmImageUrl())
                 .fit()
-                .rotate(90)
                 .into(holder.image);
 
 

@@ -147,11 +147,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 && data !=null && data.getData()!=null){
 
             mImageUri=data.getData();
-            mProfileImage.setImageURI(mImageUri);
             try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),mImageUri);
                 if(mProfileImageIndicator){
                     Log.d(TAG,"Enter loading stage");
+                    //change that
                     mProfileImage.setImageBitmap(bitmap);
                     Log.d(TAG,"passed imageBitmap");
 //                  Load new Profile image to the storage and database
@@ -161,7 +161,6 @@ public class EditProfileActivity extends AppCompatActivity {
 //                    Load new dog to the Storage and database
                     uploadFile(mRefDogsImages,mDatabaseRefDogs);
                 }
-                //add Code here to load the picture to the database storage
 
             }catch (IOException e){
                 e.printStackTrace();
@@ -366,6 +365,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
               String pathToPicture="";
               UploadImage uploadImage = dataSnapshot.getValue(UploadImage.class);
+
               if(uploadImage!=null) {
                   pathToPicture = uploadImage.getmImageUrl();
 
@@ -377,10 +377,9 @@ public class EditProfileActivity extends AppCompatActivity {
                       Picasso.get()
                               .load(pathToPicture)
                               .transform(new CircleTransform())
-                              .rotate(90)
                               .fit()
                               .into(mProfileImage);
-                      mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
+                      //mProfileImage.setImageBitmap(BitmapFactory.decodeFile(pathToPicture));
                   }
                   //uses default image
               }
