@@ -271,4 +271,12 @@ public class AddTripActivity extends AppCompatActivity {
 
         mDate.setText(sdf.format(myCalendar.getTime()));
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent first_intent = new Intent(this, AdminMainActivity.class);
+        startActivity(first_intent);
+    }
+
+
 }

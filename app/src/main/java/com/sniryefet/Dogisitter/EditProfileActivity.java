@@ -450,6 +450,11 @@ public class EditProfileActivity extends AppCompatActivity {
                }
            });
        }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent first_intent = new Intent(this, AdminMainActivity.class);
+        startActivity(first_intent);
+    }
 
 }
