@@ -152,13 +152,12 @@ public class AdminMainActivity extends AppCompatActivity {
 
 
     }
-    /*
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent first_intent = new Intent(this, LoginActivity.class);
-        startActivity(first_intent);
+        finish();
     }
-    */
+
 
 }
