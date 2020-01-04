@@ -205,6 +205,9 @@ public class AddTripActivity extends AppCompatActivity {
                 }
             }
         });
+        Intent first_intent = new Intent(this, AdminMainActivity.class);
+        startActivity(first_intent);
+        finish();
     }
 
 
