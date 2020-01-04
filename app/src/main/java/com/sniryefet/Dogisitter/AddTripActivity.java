@@ -278,6 +278,7 @@ public class AddTripActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent first_intent = new Intent(this, AdminMainActivity.class);
+        finish();
         startActivity(first_intent);
     }
 

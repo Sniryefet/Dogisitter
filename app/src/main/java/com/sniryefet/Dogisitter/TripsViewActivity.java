@@ -3,6 +3,10 @@ package com.sniryefet.Dogisitter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,6 +90,37 @@ public class TripsViewActivity extends AppCompatActivity {
             trips.add(trip);
         }
         return trips;
+    }
+
+    @Override
+    public void onBackPressed() {
+        logout();
+    }
+
+    private void logout() {
+        final Intent first_intent = new Intent(this, LoginActivity.class);
+
+        new AlertDialog.Builder(TripsViewActivity.this)
+                .setTitle("Alert")
+                .setMessage("Confirm to log out")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("remember", "false");
+                        editor.apply();
+                        finish();
+                        startActivity(first_intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

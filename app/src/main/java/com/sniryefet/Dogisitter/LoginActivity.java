@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 // For .gif files
 
@@ -58,31 +59,31 @@ public class LoginActivity extends AppCompatActivity {
         Glide.with(this).asGif().load(R.drawable.a_dog_walker_crop).into(imageView);
         mEmailView = findViewById(R.id.login_email);
         mPasswordView = findViewById(R.id.login_password);
-        userRef=FirebaseAuth.getInstance().getCurrentUser();
+        userRef = FirebaseAuth.getInstance().getCurrentUser();
         mRemember = findViewById(R.id.remember_button);
 
-        SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
-        String checkbox = preferences.getString("remember","");
-        String permission = preferences.getString("permission","");
-        if(checkbox.equals("true")){
-            Log.d("ayayayayay",permission+"000");
+        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+        String checkbox = preferences.getString("remember", "false");
+        String permission = preferences.getString("permission", "");
+        Log.d("ayaya", "c: " + checkbox);
+        Log.d("ayaya", "p: " + permission);
+        if (checkbox.equals("true")) {
+            Log.d("ayayayayay", permission + "000");
 
-            if(permission.equals("Admin")) {
-                Log.d("ayayayayay",permission+"133333333333");
+            if (permission.equals("Admin")) {
                 Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                Toast.makeText(this, "Logged In succesfully!",Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Logged In succesfully!", Toast.LENGTH_SHORT);
+                finish();
                 startActivity(intent);
 
-            }
-            else if(permission.equals("Client")){
-                Log.d("ayayayayay",permission+"133333333333");
+            } else if (permission.equals("Client")) {
                 Intent intent = new Intent(LoginActivity.this, TripsViewActivity.class);
-                Toast.makeText(this, "Logged In succesfully!",Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Logged In succesfully!", Toast.LENGTH_SHORT);
+                finish();
                 startActivity(intent);
 
-            }
-            else{
-                Toast.makeText(this, "Please log in!",Toast.LENGTH_SHORT);
+            } else {
+                Toast.makeText(this, "Please log in!", Toast.LENGTH_SHORT);
 
             }
         }
@@ -98,23 +99,22 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         mRemember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(compoundButton.isChecked()){
+                if (compoundButton.isChecked()) {
                     SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember","true");
-                    editor.putString("permission",uInfo.getPermission());
+                    editor.putString("remember", "true");
+                    editor.putString("permission", uInfo.getPermission());
                     editor.apply();
 
-                }
-                else if(!compoundButton.isChecked()){
+                } else if (!compoundButton.isChecked()) {
                     SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember","false");
-                    editor.putString("permission",uInfo.getPermission());
+                    editor.putString("remember", "false");
+                    editor.putString("permission", uInfo.getPermission());
                     editor.apply();
 
                 }
@@ -124,7 +124,8 @@ public class LoginActivity extends AppCompatActivity {
 
     // Executed when Sign in button pressed
     //listener from the xml file
-    public void signInExistingUser(View v)   { attemptLogin();
+    public void signInExistingUser(View v) {
+        attemptLogin();
     }
 
     // Executed when Register button pressed
@@ -145,26 +146,39 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("DogisitterApp", "showDataArray: Email: " + email);
         Log.d("DogisitterApp", "showDataArray: Password: " + password);
         //one of the field is blank
-        if(password.length()<1 || email.length()<1) return;
+        if (password.length() < 1 || email.length() < 1) return;
 
-        Toast.makeText(this,"Login In Progress...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Login In Progress...", Toast.LENGTH_SHORT).show();
+        if (mRemember.isChecked()) {
+            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("remember", "true");
+            editor.putString("permission", uInfo.getPermission());
+            editor.apply();
 
-        mAuth.signInWithEmailAndPassword(email,password)
+        }
+        if (!mRemember.isChecked()) {
+            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("remember", "false");
+            editor.putString("permission", "NONE");
+            editor.apply();
+        }
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         String perm;
-                        if(!task.isSuccessful()){
-                            Log.d("DogisitterApp","Login Failed "+task.getException());
+                        if (!task.isSuccessful()) {
+                            Log.d("DogisitterApp", "Login Failed " + task.getException());
                             showErrorDialog("There was an error signing in");
-                        }else {
+                        } else {
                             FirebaseUser user = mAuth.getCurrentUser();
                             userID = user.getUid();
                             Log.d("DogisitterApp", "Login was successful");
                             //go to the profile page of the admin/client
                             //DatabaseReference mUsersRef = myRef.child("Users");
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                //Log.d("nowowow", "1");
 
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -172,15 +186,24 @@ public class LoginActivity extends AppCompatActivity {
                                      * This method is called once with the initial value and again
                                      * whenever data at this location is updated.
                                      */
-                                    Log.d("dEditProfileActivity","showData is called again");
+                                    Log.d("dEditProfileActivity", "showData is called again");
                                     ArrayList<String> userInfo = showData(dataSnapshot.child("/Users"));
 
                                     Intent intent;
-                                    if (userInfo.get(2).equals("Admin")){
+                                    if (userInfo.get(2).equals("Admin")) {
                                         intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                                    }
-                                    else
+                                        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("permission", userInfo.get(2));
+                                        editor.apply();
+
+                                    } else {
                                         intent = new Intent(LoginActivity.this, TripsViewActivity.class);
+                                        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("permission", userInfo.get(2));
+                                        editor.apply();
+                                    }
                                     finish();
                                     startActivity(intent);
                                 }
@@ -200,8 +223,8 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> showData(DataSnapshot dataSnapshot) {
         //User userInfo = new User();
         ArrayList<String> array = new ArrayList<>();
-        for(DataSnapshot ds: dataSnapshot.getChildren()){
-            if(userID.equals(ds.getKey())) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (userID.equals(ds.getKey())) {
                 uInfo.setEmail(ds.getValue(User.class).getEmail());
                 uInfo.setName(ds.getValue(User.class).getName());
                 uInfo.setPermission(ds.getValue(User.class).getPermission());
@@ -217,15 +240,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void showErrorDialog(String message){
+    private void showErrorDialog(String message) {
         new AlertDialog.Builder(this)
                 .setTitle("Error")
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok,null)
+                .setPositiveButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-
 
 
 }

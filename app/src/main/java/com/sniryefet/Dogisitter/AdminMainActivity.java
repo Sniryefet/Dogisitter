@@ -3,7 +3,9 @@ package com.sniryefet.Dogisitter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,12 +57,9 @@ public class AdminMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
-        Log.d("barelele","1");
 
         setDisplayName();
-        mDatabaseReference= FirebaseDatabase.getInstance().getReference();
-        Log.d("barelele","2");
-
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,10 +74,10 @@ public class AdminMainActivity extends AppCompatActivity {
                 itemView.setAdapter(tAdapter);
 
                 // **** On Click item ******
-                itemView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                itemView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(AdminMainActivity.this, "Click ti item: "+position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminMainActivity.this, "Click ti item: " + position, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -88,13 +87,14 @@ public class AdminMainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Log.d("barelele","3");
+        Log.d("barelele", "3");
 
 
         String user_name = getUser().getName();
-        Log.d("Dogisitter","AdminTripView:    "+ getUser().getName() );
+        Log.d("Dogisitter", "AdminTripView:    " + getUser().getName());
     }
-    public static User getUser(){
+
+    public static User getUser() {
         return uInfo;
     }
 
@@ -118,17 +118,17 @@ public class AdminMainActivity extends AppCompatActivity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private void setDisplayName(){
-        SharedPreferences prefs= getSharedPreferences(RegisterActivity.CHAT_PREFS,MODE_PRIVATE);
-        mDisplayName = prefs.getString(RegisterActivity.DISPLAY_NAME_KEY,null);
+    private void setDisplayName() {
+        SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, MODE_PRIVATE);
+        mDisplayName = prefs.getString(RegisterActivity.DISPLAY_NAME_KEY, null);
 
-        if(mDisplayName==null) mDisplayName = "Annonymous";
+        if (mDisplayName == null) mDisplayName = "Annonymous";
 
     }
 
 
     //onClick listener from xml file
-    public void addTrip(View v){
+    public void addTrip(View v) {
         Intent intent = new Intent(this, AddTripActivity.class);
         finish();
         startActivity(intent);
@@ -136,7 +136,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
 
     //onClick listener from xml file
-    public void editProfile(View v){
+    public void editProfile(View v) {
         Intent intent = new Intent(this, EditProfileActivity.class);
         finish();
         startActivity(intent);
@@ -149,15 +149,60 @@ public class AdminMainActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-
+        String delTrip = "-LxkFQfEnyz0ErdbBufC";
+        deleteTrip(delTrip);
 
     }
+    private void deleteTrip(String tripName){
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference dbNode1 = FirebaseDatabase.getInstance().getReference("Trips").child(tripName);
+        DatabaseReference dbNode2 = FirebaseDatabase.getInstance().getReference("AdminTrips").child(userID).child(tripName);
+        dbNode1.setValue(null);
+        dbNode2.setValue(null);
+    }
+
+
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        logout();
+        /*
+        Intent first_intent = new Intent(this, LoginActivity.class);
+        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("remember", "false");
+        editor.apply();
         finish();
+        startActivity(first_intent);
+
+         */
     }
 
+    private void logout() {
+        final Intent first_intent = new Intent(this, LoginActivity.class);
+
+         new AlertDialog.Builder(AdminMainActivity.this)
+                .setTitle("Alert")
+                .setMessage("Confirm to log out")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("remember", "false");
+                        editor.apply();
+                        finish();
+                        startActivity(first_intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 }
