@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private ListView mTripListView;
     private static boolean deletingNow = false;
     private DatabaseReference mDatabaseReference;
+    private static ArrayList<String> tripsId = new ArrayList<>();
 
     private GridView itemView;
     //private ArrayList<Trip> trips;
@@ -68,8 +70,8 @@ public class AdminMainActivity extends AppCompatActivity {
                  * This method is called once with the initial value and again
                  * whenever data at this location is updated.
                  */
-                ArrayList<Trip> trips = pullData(dataSnapshot.child("/AdminTrips"));
-                TripAdapter tAdapter = new TripAdapter(AdminMainActivity.this, imageIds, trips);
+                final ArrayList<Trip> trips = pullData(dataSnapshot.child("/AdminTrips"));
+                final TripAdapter tAdapter = new TripAdapter(AdminMainActivity.this, imageIds, trips);
                 itemView = (GridView) findViewById(R.id.gridview);
                 itemView.setAdapter(tAdapter);
 
@@ -77,7 +79,22 @@ public class AdminMainActivity extends AppCompatActivity {
                 itemView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(AdminMainActivity.this, "Click ti item: " + position, Toast.LENGTH_SHORT).show();
+
+                        //Toast.makeText(AdminMainActivity.this, "Click ti item: " + position+"|||"+id, Toast.LENGTH_SHORT).show();
+                        if (deletingNow) {
+                            Toast.makeText(AdminMainActivity.this, "deleting item: " + position +
+                                            " key:" + tripsId.get(position), Toast.LENGTH_SHORT).show();
+
+                            trips.remove(position);
+                            deleteTrip(tripsId.get(position));
+                            tAdapter.notifyDataSetChanged();
+                            deletingNow = false;
+                            for (int i = 0; i < trips.size(); i++) {
+                                itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
+                            }
+
+                        }
+                        
                     }
                 });
             }
@@ -102,6 +119,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private ArrayList<Trip> pullData(DataSnapshot dataSnapshot) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ArrayList<Trip> trips = new ArrayList<>();
+        tripsId.clear();
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             //Log.d("whoAmI?",ds.toString());
             //Log.d("whoAmI",userID);
@@ -109,9 +127,11 @@ public class AdminMainActivity extends AppCompatActivity {
                 for (DataSnapshot ds2 : ds.getChildren()) {
                     Trip trip = ds2.getValue(Trip.class);
                     trips.add(trip);
+                    tripsId.add(ds2.getKey());
                 }
             }
         }
+
         return trips;
 
     }
@@ -143,6 +163,9 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     public void edit(View view) {
+        for (int i = 0; i < tripsId.size(); i++) {
+            itemView.getChildAt(i).setBackgroundColor(Color.RED);
+        }
         deletingNow = true;
         Context context = getApplicationContext();
         CharSequence text = "Touch to delete a trip!";
@@ -153,14 +176,14 @@ public class AdminMainActivity extends AppCompatActivity {
         deleteTrip(delTrip);
 
     }
-    private void deleteTrip(String tripName){
+
+    private void deleteTrip(String tripName) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference dbNode1 = FirebaseDatabase.getInstance().getReference("Trips").child(tripName);
         DatabaseReference dbNode2 = FirebaseDatabase.getInstance().getReference("AdminTrips").child(userID).child(tripName);
         dbNode1.setValue(null);
         dbNode2.setValue(null);
     }
-
 
 
     @Override
@@ -182,7 +205,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private void logout() {
         final Intent first_intent = new Intent(this, LoginActivity.class);
 
-         new AlertDialog.Builder(AdminMainActivity.this)
+        new AlertDialog.Builder(AdminMainActivity.this)
                 .setTitle("Alert")
                 .setMessage("Confirm to log out")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
