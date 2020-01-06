@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private static boolean deletingNow = false;
     private DatabaseReference mDatabaseReference;
     private static ArrayList<String> tripsId = new ArrayList<>();
-
+    private Button deleteTripBtn ;
     private GridView itemView;
     //private ArrayList<Trip> trips;
 
@@ -62,7 +63,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
         setDisplayName();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
+        deleteTripBtn = (Button) findViewById(R.id.rmTripBtn);
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -83,18 +84,20 @@ public class AdminMainActivity extends AppCompatActivity {
                         //Toast.makeText(AdminMainActivity.this, "Click ti item: " + position+"|||"+id, Toast.LENGTH_SHORT).show();
                         if (deletingNow) {
                             Toast.makeText(AdminMainActivity.this, "deleting item: " + position +
-                                            " key:" + tripsId.get(position), Toast.LENGTH_SHORT).show();
+                                    " key:" + tripsId.get(position), Toast.LENGTH_SHORT).show();
 
                             trips.remove(position);
                             deleteTrip(tripsId.get(position));
                             tAdapter.notifyDataSetChanged();
                             deletingNow = false;
+                            deleteTripBtn.setText("Remove trip");
+
                             for (int i = 0; i < trips.size(); i++) {
                                 itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
                             }
 
                         }
-                        
+
                     }
                 });
             }
@@ -163,10 +166,20 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     public void edit(View view) {
+        if (deletingNow) {
+            deletingNow = false;
+            deleteTripBtn.setText("Remove trip");
+
+            for (int i = 0; i < tripsId.size(); i++) {
+                itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
+            }
+            return;
+        }
         for (int i = 0; i < tripsId.size(); i++) {
             itemView.getChildAt(i).setBackgroundColor(Color.RED);
         }
         deletingNow = true;
+        deleteTripBtn.setText("Cancel");
         Context context = getApplicationContext();
         CharSequence text = "Touch to delete a trip!";
         int duration = Toast.LENGTH_SHORT;
