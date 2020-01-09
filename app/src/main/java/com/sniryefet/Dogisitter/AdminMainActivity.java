@@ -27,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.sniryefet.Dogisitter.LoginActivity.uInfo;
 
@@ -39,6 +41,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private static ArrayList<String> tripsId = new ArrayList<>();
     private Button deleteTripBtn ;
     private GridView itemView;
+    private Set<String> mTripParticipants;
     //private ArrayList<Trip> trips;
 
     final int[] imageIds = {R.drawable.puppy1,
@@ -61,9 +64,12 @@ public class AdminMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
+        mTripParticipants=new HashSet<>();
+
         setDisplayName();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         deleteTripBtn = (Button) findViewById(R.id.rmTripBtn);
+
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,12 +196,38 @@ public class AdminMainActivity extends AppCompatActivity {
 
     }
 
-    private void deleteTrip(String tripName) {
+    private void deleteTrip(final String tripName) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference dbNode1 = FirebaseDatabase.getInstance().getReference("Trips").child(tripName);
         DatabaseReference dbNode2 = FirebaseDatabase.getInstance().getReference("AdminTrips").child(userID).child(tripName);
+        DatabaseReference dbNode3 = FirebaseDatabase.getInstance().getReference("TripsParticipants").child(tripName);
+
         dbNode1.setValue(null);
         dbNode2.setValue(null);
+        dbNode3.setValue(null);
+
+        final DatabaseReference dbNode4 = FirebaseDatabase.getInstance().getReference("ClientTrips");
+        dbNode4.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    for(DataSnapshot neDs : ds.getChildren()){
+                        if(neDs.getKey().equals(tripName)){
+                            Log.d("dAdminMain", ds.getKey()+"/"+neDs.getKey());
+                            dbNode4.child(ds.getKey()).child(neDs.getKey()).removeValue();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 
