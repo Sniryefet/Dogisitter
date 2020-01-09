@@ -27,6 +27,8 @@ import static com.sniryefet.Dogisitter.LoginActivity.uInfo;
 
 public class TripsViewActivity extends AppCompatActivity {
     private GridView itemView;
+    private static ArrayList<String> tripsId = new ArrayList<>();
+
     //private ArrayList<Trip> trips;
 
     final int[] imageIds = {R.drawable.puppy1,
@@ -66,6 +68,8 @@ public class TripsViewActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(TripsViewActivity.this,PopActivity.class);
                         intent.putExtra("itemView", String.valueOf((GridView) itemView));
+                        intent.putExtra("position",position);
+                        intent.putExtra("key",tripsId.get(position));
                         finish();
                         startActivity (intent);
                     }
@@ -88,9 +92,11 @@ public class TripsViewActivity extends AppCompatActivity {
 
     private ArrayList<Trip> pullData(DataSnapshot dataSnapshot){
         ArrayList<Trip> trips = new ArrayList<>();
+        tripsId.clear();
         for(DataSnapshot ds: dataSnapshot.getChildren()){
             Trip trip = ds.getValue(Trip.class);
             trips.add(trip);
+            tripsId.add(ds.getKey());
         }
         return trips;
     }
