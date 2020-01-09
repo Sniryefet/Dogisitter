@@ -60,11 +60,14 @@ public class TripsViewActivity extends AppCompatActivity {
                 itemView = (GridView) findViewById(R.id.gridview);
                 itemView.setAdapter(tAdapter);
 
-                // **** On Click item ******
+                // ** On Click item **
                 itemView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(TripsViewActivity.this, "Click ti item: "+position, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(TripsViewActivity.this,PopActivity.class);
+                        intent.putExtra("itemView", String.valueOf((GridView) itemView));
+                        finish();
+                        startActivity (intent);
                     }
                 });
             }

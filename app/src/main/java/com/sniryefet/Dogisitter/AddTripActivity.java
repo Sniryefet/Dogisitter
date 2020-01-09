@@ -181,6 +181,9 @@ public class AddTripActivity extends AppCompatActivity {
     private void addTrip(Trip newTrip){
         String userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
         //LoginActivity.uInfo.addTrip(newTrip);
+
+//        newTrip.setKey(tripId)
+
         String tripId = FirebaseDatabase.getInstance().getReference("Trips").push().getKey();
         Log.d("TESTTEST", "KeyId: "+ tripId);
         FirebaseDatabase.getInstance().getReference("Trips").child(tripId)

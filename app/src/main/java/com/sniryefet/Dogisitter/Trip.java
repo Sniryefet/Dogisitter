@@ -10,6 +10,7 @@ public class Trip {
     private String description;
     private String adminID;
 
+
     public Trip(){}
     public Trip(String name,String place,String date,String time,String duration,
                 String capacity, String description, String adminID){
