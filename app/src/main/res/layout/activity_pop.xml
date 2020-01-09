@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pop_bg"
+    android:background="@drawable/grad"
     tools:context=".PopActivity">
 
 
@@ -12,29 +12,23 @@
 
 
     <LinearLayout
+        android:id="@+id/popTopLayout"
         android:layout_width="409dp"
-        android:layout_height="278dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/infoLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"
         >
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                app:srcCompat="@drawable/common_full_open_on_phone" />
-        </RelativeLayout>
-
-
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            app:srcCompat="@drawable/common_full_open_on_phone" />
 
 
     </LinearLayout>
@@ -42,9 +36,9 @@
     <LinearLayout
         android:id="@+id/infoLayout"
         android:layout_width="407dp"
-        android:layout_height="373dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/joinTripButton"
+        app:layout_constraintTop_toBottomOf="@+id/popTopLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -52,8 +46,14 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Name"
+                android:textColor="@color/white"
+                />
             <TextView
                 android:id="@+id/popName"
                 android:layout_width="match_parent"
@@ -66,9 +66,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Date"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/popDate"
                 android:layout_width="match_parent"
@@ -81,8 +86,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Time"
+                android:textColor="@color/white"
+                />
             <TextView
                 android:id="@+id/popTime"
                 android:layout_width="match_parent"
@@ -95,8 +106,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Duration"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/popDuration"
                 android:layout_width="match_parent"
@@ -110,8 +126,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Capacity"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/popCapacity"
                 android:layout_width="match_parent"
@@ -124,8 +145,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Location"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/popLocation"
                 android:layout_width="match_parent"
@@ -137,8 +163,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Description"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/popDescription"
                 android:layout_width="match_parent"
@@ -160,6 +192,8 @@
         android:layout_marginBottom="30dp"
         android:onClick="joinTrip"
         android:text="Join"
+        android:textColor="@color/white"
+        android:background="@drawable/button_grad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

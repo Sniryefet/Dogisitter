@@ -44,6 +44,7 @@ public class TripsViewActivity extends AppCompatActivity {
             R.drawable.puppy11,
     };
 
+
     private DatabaseReference refTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override

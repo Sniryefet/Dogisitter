@@ -9,7 +9,7 @@ public class Trip {
     private String capacity;
     private String description;
     private String adminID;
-
+    private String currCapacity;
 
     public Trip(){}
     public Trip(String name,String place,String date,String time,String duration,
@@ -22,6 +22,7 @@ public class Trip {
         this.capacity=capacity;
         this.description=description;
         this.adminID = adminID;
+        this.currCapacity="0";
     }
 
     public String getTripName() {
@@ -62,6 +63,14 @@ public class Trip {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getCurrCapacity() {
+        return currCapacity;
+    }
+
+    public void setCurrCapacity(String currCapacity) {
+        this.currCapacity = currCapacity;
     }
 
     public String getCapacity() {
