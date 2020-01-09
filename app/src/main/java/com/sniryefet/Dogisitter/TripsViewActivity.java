@@ -51,7 +51,7 @@ public class TripsViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips_view);
-        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /**
