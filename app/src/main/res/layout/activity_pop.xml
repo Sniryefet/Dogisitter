@@ -196,6 +196,19 @@
         android:background="@drawable/button_grad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/leaveTripButton"/>
+
+    <Button
+        android:id="@+id/leaveTripButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:onClick="leaveTrip"
+        android:text="Leave"
+        android:textColor="@color/white"
+        android:background="@drawable/button_grad"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/joinTripButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

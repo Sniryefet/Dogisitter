@@ -94,12 +94,6 @@ public class PopActivity extends AppCompatActivity {
         }
 
 
-        //        TO DO :
-        // 1. CHECK if the current capacity is lower than the trip's capacity
-        // 2. in case it's lower - sign the user for the
-        //          TripsParticipants - add my id under the trip
-        //          Trips - add +1 to the capacity
-
         Log.d(TAG , "join Trip key activated");
 
 
@@ -147,15 +141,12 @@ public class PopActivity extends AppCompatActivity {
                     //Update Set - NOT SURE IF REQUIRED
                     mMyTrips.add(mClickedTripKey);
 
-
-
                 }else{
 
                     Toast
                             .makeText(PopActivity.this, "We are sorry but the trip is full of participants", Toast.LENGTH_SHORT)
                             .show();
                 }
-
 
 
             }
@@ -167,7 +158,54 @@ public class PopActivity extends AppCompatActivity {
         });
 
     }
+    //onClick
+    public void leaveTrip(View view){
+        if(!mMyTrips.contains(mClickedTripKey)){
+            Toast
+                    .makeText(PopActivity.this, "Hey you are not register for this trip", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
 
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Trips/"+mClickedTripKey);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Trip t = dataSnapshot.getValue(Trip.class);
+                int capacity = Integer.parseInt(t.getCapacity());
+                int curCap = Integer.parseInt(t.getCurrCapacity());
+                curCap--;
+                t.setCurrCapacity(curCap+"");
+
+                //UPDATE DATABASE "Trips"
+                ref.setValue(t);
+                Toast
+                        .makeText(PopActivity.this, "You have just left the trip", Toast.LENGTH_SHORT)
+                        .show();
+                //REMOVE THE TRIP FROM THE SET
+                mMyTrips.remove(mClickedTripKey);
+
+                //UPDATE SCREEN
+                mCapacity.setText(""+curCap+"/"+capacity);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        FirebaseDatabase.getInstance()
+                .getReference("ClientTrips/"+mUserID+"/"+mClickedTripKey)
+                .setValue(null);
+
+        FirebaseDatabase.getInstance()
+                .getReference("TripsParticipants/"+mClickedTripKey+"/"+mUserID)
+                .setValue(null);
+        
+    }
 
     private void loadData(){
 
