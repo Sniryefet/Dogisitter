@@ -71,12 +71,15 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("ayayayayay", permission + "000");
 
             if (permission.equals("Admin")) {
+                uInfo.setPermission("Admin");
                 Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
                 Toast.makeText(this, "Logged In succesfully!", Toast.LENGTH_SHORT);
                 finish();
                 startActivity(intent);
 
             } else if (permission.equals("Client")) {
+                uInfo.setPermission("Client");
+
                 Intent intent = new Intent(LoginActivity.this, TripsViewActivity.class);
                 Toast.makeText(this, "Logged In succesfully!", Toast.LENGTH_SHORT);
                 finish();

@@ -196,9 +196,20 @@ public class EditProfileActivity extends AppCompatActivity {
     // onClick from the xml
     public void backButton(View v){
         // need to change it to the right page according to the user permission
-        Intent intent = new Intent(EditProfileActivity.this,AdminMainActivity.class);
-        finish();
-        startActivity(intent);
+//        Intent intent = new Intent(EditProfileActivity.this,AdminMainActivity.class);
+//        finish();
+//        startActivity(intent);
+
+        String per = LoginActivity.uInfo.getPermission();
+        if(per.equals("Admin")) {
+            Intent first_intent = new Intent(this, AdminMainActivity.class);
+            finish();
+            startActivity(first_intent);
+        }else{ //(MEANING CLIENT
+            Intent first_intent = new Intent(this, TripsViewActivity.class);
+            finish();
+            startActivity(first_intent);
+        }
 
     }
 
@@ -453,8 +464,17 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent first_intent = new Intent(this, AdminMainActivity.class);
-        startActivity(first_intent);
+        String per = LoginActivity.uInfo.getPermission();
+        Log.d(TAG,"permission: "+per);
+
+        if(per.equals("Admin")) {
+            Intent first_intent = new Intent(this, AdminMainActivity.class);
+            startActivity(first_intent);
+        }else{ //(MEANING CLIENT
+            Intent first_intent = new Intent(this, TripsViewActivity.class);
+            startActivity(first_intent);
+        }
+
     }
 
 }

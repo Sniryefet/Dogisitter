@@ -42,7 +42,7 @@
     <string name="prompt_Trip_Name">Trip Name</string>
 
     <string name="Meeting_Place">Meeting Place</string>
-    <string name="Prompt_Meeting_Place">Meeting Place</string>
+    <string name="Prompt_Meeting_Place">Meeting Place </string>
 
     <string name="Date">Date</string>
     <string name="prompt_Date">Date</string>
@@ -51,7 +51,7 @@
     <string name="Prompt_Time">Time</string>
 
     <string name="Duration">Duration</string>
-    <string name="Prompt_Duration">Duration</string>
+    <string name="Prompt_Duration">Duration (In Minutes)</string>
 
     <string name="Capacity">Capacity</string>
     <string name="Prompt_Capacity">Capacity</string>
