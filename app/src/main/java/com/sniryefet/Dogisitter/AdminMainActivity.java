@@ -1,7 +1,9 @@
 package com.sniryefet.Dogisitter;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarTab;
+import com.roughike.bottombar.OnTabReselectListener;
+import com.roughike.bottombar.OnTabSelectListener;
+import com.sniryefet.Dogisitter.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,6 +49,9 @@ public class AdminMainActivity extends AppCompatActivity {
     private Button deleteTripBtn ;
     private GridView itemView;
     private Set<String> mTripParticipants;
+    private BottomBar bottomBar;
+    private int count = 2;
+
     //private ArrayList<Trip> trips;
 
     final int[] imageIds = {R.drawable.puppy1,
@@ -57,18 +67,21 @@ public class AdminMainActivity extends AppCompatActivity {
             R.drawable.puppy11,
     };
 
+    public AdminMainActivity() {
+    }
+
     //private DatabaseReference refTrips = FirebaseDatabase.getInstance().getReference("Trips");
     //private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+        bottomBar = (BottomBar) findViewById(R.id.bottom_navigation_admin);
 
         mTripParticipants=new HashSet<>();
 
         setDisplayName();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        deleteTripBtn = (Button) findViewById(R.id.rmTripBtn);
 
         FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,7 +95,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 itemView = (GridView) findViewById(R.id.gridview);
                 itemView.setAdapter(tAdapter);
 
-                // **** On Click item ******
+                // * On Click item *
                 itemView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,9 +126,68 @@ public class AdminMainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Log.d("barelele", "3");
 
 
+        BottomBarTab dummy = bottomBar.getTabWithId(R.id.dummy_id_admin);
+        dummy.setVisibility(View.GONE);
+        Log.d("abababab", "id: "+bottomBar.getCurrentTabPosition());
+        bottomBar.setDefaultTab(R.id.dummy_id_admin);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            Fragment selected = null;
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.dummy_id_admin:
+                        if(count == 1){
+                            count = 0;
+                            startActivity(new Intent(getApplicationContext(),AdminMainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                        }
+                        break;
+                    case R.id.ic_profile_admin:
+                        count = 1;
+                        Toast.makeText(AdminMainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        editProfile();
+                        break;
+                    case R.id.ic_progress_admin:
+                        count = 1;
+                        Toast.makeText(AdminMainActivity.this, "Add Trip", Toast.LENGTH_SHORT).show();
+                        addTrip();
+                        break;
+                    case R.id.remove_trip: // NEED TO BE CHANGED
+                        count = 1;
+                        Toast.makeText(AdminMainActivity.this, "Click to remove a trip", Toast.LENGTH_SHORT).show();
+                        edit();
+                        break;
+                    case R.id.log_out_admin:
+                        count = 1;
+                        Toast.makeText(AdminMainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                        logout(); // if not the first default active tab.
+                        break;
+                }
+            }
+        });
+        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
+            @Override
+            public void onTabReSelected(int tabId) {
+                switch (tabId){
+                    case R.id.dummy_id_admin:
+                        break;
+                    case R.id.remove_trip:
+                        BottomBarTab rt = bottomBar.findViewById(R.id.remove_trip);
+                        for (int i = 0; i < tripsId.size(); i++) {
+                            itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
+                        }
+                        rt.setTitle("Remove trip");
+                        bottomBar.setSelected(false);
+                        bottomBar.selectTabWithId(R.id.dummy_id_admin);
+
+                        break;
+                    case R.id.log_out_admin:
+                        logout();
+                        break;
+                }
+            }
+        });
         String user_name = getUser().getName();
         Log.d("Dogisitter", "AdminTripView:    " + getUser().getName());
     }
@@ -130,8 +202,6 @@ public class AdminMainActivity extends AppCompatActivity {
         ArrayList<Trip> trips = new ArrayList<>();
         tripsId.clear();
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            //Log.d("whoAmI?",ds.toString());
-            //Log.d("whoAmI",userID);
             if (ds.getKey().equals(userID)) {
                 for (DataSnapshot ds2 : ds.getChildren()) {
                     Trip trip = ds2.getValue(Trip.class);
@@ -157,7 +227,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
 
     //onClick listener from xml file
-    public void addTrip(View v) {
+    public void addTrip() {
         Intent intent = new Intent(this, AddTripActivity.class);
         finish();
         startActivity(intent);
@@ -165,34 +235,25 @@ public class AdminMainActivity extends AppCompatActivity {
 
 
     //onClick listener from xml file
-    public void editProfile(View v) {
+    public void editProfile() {
         Intent intent = new Intent(this, EditProfileActivity.class);
         finish();
         startActivity(intent);
     }
 
-    public void edit(View view) {
-        if (deletingNow) {
-            deletingNow = false;
-            deleteTripBtn.setText("Remove trip");
-
-            for (int i = 0; i < tripsId.size(); i++) {
-                itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
-            }
-            return;
-        }
+    public void edit() {
         for (int i = 0; i < tripsId.size(); i++) {
             itemView.getChildAt(i).setBackgroundColor(Color.RED);
         }
         deletingNow = true;
-        deleteTripBtn.setText("Cancel");
+        BottomBarTab rt = bottomBar.findViewById(R.id.remove_trip);
+        rt.setTitle("Cancel");
         Context context = getApplicationContext();
         CharSequence text = "Touch to delete a trip!";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-        String delTrip = "-LxkFQfEnyz0ErdbBufC";
-        deleteTrip(delTrip);
+
 
     }
 
@@ -233,18 +294,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         logout();
-        /*
-        Intent first_intent = new Intent(this, LoginActivity.class);
-        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("remember", "false");
-        editor.apply();
-        finish();
-        startActivity(first_intent);
-
-         */
     }
 
     private void logout() {

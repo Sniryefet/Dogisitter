@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <tabs>
+        <tab
+            id="@+id/log_out_admin"
+            icon="@drawable/log_out"
+            title="@string/activity_main_bottom_screen_logout" />
+        <tab
+            id="@+id/dummy_id_admin"
+            icon="@drawable/dummy_id"
+            title="@string/activity_main_bottom_screen_dummy" />
+        <tab
+            id="@+id/ic_progress_admin"
+            icon="@drawable/ic_progress"
+            title="Add Trip" />
+
+        <tab
+            id="@+id/remove_trip"
+            icon="@drawable/delete_trip_bottombar"
+            title="Remove" />
+        <tab
+            id="@+id/ic_profile_admin"
+            icon="@drawable/ic_profile"
+            title="@string/activity_main_bottom_screen_profile" />
+    </tabs>
+</PreferenceScreen>

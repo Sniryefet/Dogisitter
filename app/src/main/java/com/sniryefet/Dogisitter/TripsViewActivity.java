@@ -1,5 +1,6 @@
 package com.sniryefet.Dogisitter;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarTab;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.ArrayList;
 
@@ -27,10 +32,10 @@ import static com.sniryefet.Dogisitter.LoginActivity.uInfo;
 
 public class TripsViewActivity extends AppCompatActivity {
     private GridView itemView;
+    //    private SearchView searchView;
+    private ArrayList<Trip> FilteredTrips;
+    private TripAdapter tAdapter;
     private static ArrayList<String> tripsId = new ArrayList<>();
-
-    //private ArrayList<Trip> trips;
-
     final int[] imageIds = {R.drawable.puppy1,
             R.drawable.puppy2,
             R.drawable.puppy3,
@@ -44,14 +49,13 @@ public class TripsViewActivity extends AppCompatActivity {
             R.drawable.puppy11,
     };
 
-
     private DatabaseReference refTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips_view);
-        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 /**
@@ -59,8 +63,9 @@ public class TripsViewActivity extends AppCompatActivity {
                  * whenever data at this location is updated.
                  */
                 ArrayList<Trip> trips = pullData(dataSnapshot.child("/Trips"));
-                TripAdapter tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
+                tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
                 itemView = (GridView) findViewById(R.id.gridview);
+//                searchView = (SearchView) findViewById(R.id.search_view);
                 itemView.setAdapter(tAdapter);
 
                 // ** On Click item **
@@ -75,6 +80,7 @@ public class TripsViewActivity extends AppCompatActivity {
                         startActivity (intent);
                     }
                 });
+
             }
 
             @Override
@@ -82,14 +88,61 @@ public class TripsViewActivity extends AppCompatActivity {
             }
         });
 
+        // ** search bar listener **
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                tAdapter.getFilter().filter(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottom_navigation);
+        BottomBarTab dummy = bottomBar.getTabWithId(R.id.dummy_id);
+        dummy.setVisibility(View.GONE);
+        bottomBar.setDefaultTab(R.id.dummy_id);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.ic_profile:
+                        Toast.makeText(TripsViewActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        editProfile();
+                        break;
+                    case R.id.ic_progress:
+                        Toast.makeText(TripsViewActivity.this, "My trips", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(TripsViewActivity.this,ClientTrips.class);
+                        finish();
+                        startActivity (intent);
+                        break;
+                    case R.id.log_out:
+                        Toast.makeText(TripsViewActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                        logout(); // if not the first default active tab.
+                        break;
+                }
+            }
+        });
 
         String user_name = getUser().getName();
         Log.d("Dogisitter","TripView:    "+ getUser().getName() );
     }
+
     public static User getUser(){
         return uInfo;
     }
 
+    //onClick listener from xml file
+    public void editProfile() {
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        finish();
+        startActivity(intent);
+    }
 
     private ArrayList<Trip> pullData(DataSnapshot dataSnapshot){
         ArrayList<Trip> trips = new ArrayList<>();
@@ -104,7 +157,6 @@ public class TripsViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         logout();
     }
 
@@ -133,11 +185,6 @@ public class TripsViewActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-    public void MyTrips(View view){
-        super.onBackPressed();
-        Intent intent = new Intent(TripsViewActivity.this,ClientTrips.class);
-        finish();
-        startActivity (intent);
-    }
+
 
 }
