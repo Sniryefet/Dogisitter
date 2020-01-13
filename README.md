@@ -1,7 +1,9 @@
 # Welcome to Walkers!
 
 Most of us love dogs, many of us have dogs. But we do not always find the time and place for express this love...
+**
 ![](https://lh4.googleusercontent.com/EigGQerwaRBKKtvACDFqvAgfhrLoznZqaCYsPk8MJc74HvEb_cISv0N2svDK5pbjYA1TiM6KgN7yKc5W4cXJ35nwEgfvxQT_jrBpj8AsXhvSYiejk9kiEZ_welIxAFcZJn8AzOIVJsM)
+**
 
  That's why we invented:
  **![](https://lh5.googleusercontent.com/VbwvJFPX3CY32Ewg9HbPYZc_EsjEUHgbtaX_Y969T-tsFfYHZCxLG5mH9pLTi4aFKT_NuYkmGCXfu_fi8dLdVuSciQNhDADySxUe1z_9mS6xxkds7xa5Z0VFVBMaaaHlgxscDujb9fc)**
