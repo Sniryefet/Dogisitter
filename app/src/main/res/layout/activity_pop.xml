@@ -7,9 +7,6 @@
     tools:context=".PopActivity">
 
 
-
-
-
     <LinearLayout
         android:id="@+id/popTopLayout"
         android:layout_width="409dp"
@@ -35,12 +32,12 @@
 
     <LinearLayout
         android:id="@+id/infoLayout"
-        android:layout_width="407dp"
-        android:layout_height="450dp"
+        android:layout_width="412dp"
+        android:layout_height="514dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/popTopLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popTopLayout">
 
         <LinearLayout
 
@@ -52,8 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Name"
-                android:textColor="@color/address"
-                />
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popName"
                 android:layout_width="match_parent"
@@ -66,58 +63,60 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Date"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Date"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Time"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Time"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Duration"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Duration"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
 
         </LinearLayout>
@@ -125,19 +124,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Capacity"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popCapacity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current Capacity"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -150,13 +150,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Location"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Location"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -169,17 +170,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Trip Description"
-                android:textColor="@color/address"/>
+                android:textColor="@color/address" />
+
             <TextView
                 android:id="@+id/popDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Description"
-                android:textSize="24sp">
-            </TextView>
+                android:textSize="24sp"></TextView>
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/profileBtn"
+            android:layout_width="253dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="154dp"
+            android:layout_marginLeft="154dp"
+            android:background="@drawable/button_grad"
+            android:onClick="showAdmin"
+            android:text="SHOW ADMIN"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>
@@ -189,25 +200,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/button_grad"
         android:onClick="joinTrip"
         android:text="Join"
         android:textColor="@color/white"
-        android:background="@drawable/button_grad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/leaveTripButton"/>
+        app:layout_constraintStart_toEndOf="@+id/leaveTripButton"
+        app:layout_constraintTop_toBottomOf="@+id/infoLayout" />
 
     <Button
         android:id="@+id/leaveTripButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/button_grad"
         android:onClick="leaveTrip"
         android:text="Leave"
         android:textColor="@color/white"
-        android:background="@drawable/button_grad"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/joinTripButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/joinTripButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/infoLayout" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

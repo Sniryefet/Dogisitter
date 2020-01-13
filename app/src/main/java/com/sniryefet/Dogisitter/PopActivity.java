@@ -32,7 +32,7 @@ public class PopActivity extends AppCompatActivity {
     private TextView mCapacity;
     private TextView mLocation;
     private TextView mDescription;
-
+    private String tripAdminKey;
     private Set<String> mMyTrips;
     private String mClickedTripKey;
     private final String TAG = "dPopActivity";
@@ -206,7 +206,12 @@ public class PopActivity extends AppCompatActivity {
                 .setValue(null);
         
     }
-
+    public void showAdmin(View view){
+        Intent intent = new Intent(PopActivity.this,AdminProfile.class);
+        intent.putExtra("adminKey",tripAdminKey);
+        finish();
+        startActivity (intent);
+    }
     private void loadData(){
 
         DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("Trips/"+mClickedTripKey);
@@ -222,6 +227,7 @@ public class PopActivity extends AppCompatActivity {
                     mDuration.setText(t.getDuration());
                     mDescription.setText(t.getDescription());
                     mCapacity.setText(t.getCurrCapacity()+"/"+t.getCapacity());
+                    tripAdminKey=t.getAdminID();
                 }
 
                 @Override
