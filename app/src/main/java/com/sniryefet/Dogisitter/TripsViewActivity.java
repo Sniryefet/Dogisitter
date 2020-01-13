@@ -104,6 +104,7 @@ public class TripsViewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         logout();
     }
 
@@ -131,6 +132,12 @@ public class TripsViewActivity extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+    public void MyTrips(View view){
+        super.onBackPressed();
+        Intent intent = new Intent(TripsViewActivity.this,ClientTrips.class);
+        finish();
+        startActivity (intent);
     }
 
 }

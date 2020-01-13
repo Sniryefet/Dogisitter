@@ -65,4 +65,9 @@
     <string name="Back_Button">Back</string>
     <string name="New_Dog">New Dog</string>
 
+    <!--    Activity view trips menu -->
+    <string name="activity_main_bottom_screen_logout">Logout</string>
+    <string name="activity_main_bottom_screen_progress">My trips</string>
+    <string name="activity_main_bottom_screen_profile">Profile</string>
+    <string name="activity_main_bottom_screen_dummy">Dummy</string>
 </resources>

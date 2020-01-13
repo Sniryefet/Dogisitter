@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <tabs>
+        <tab
+            id="@+id/log_out"
+            icon="@drawable/log_out"
+            title="@string/activity_main_bottom_screen_logout" />
+        <tab
+            id="@+id/dummy_id"
+            icon="@drawable/dummy_id"
+            title="@string/activity_main_bottom_screen_dummy" />
+        <tab
+            id="@+id/ic_progress"
+            icon="@drawable/ic_progress"
+            title="@string/activity_main_bottom_screen_progress" />
+        <tab
+            id="@+id/ic_profile"
+            icon="@drawable/ic_profile"
+            title="@string/activity_main_bottom_screen_profile" />
+    </tabs>
 </PreferenceScreen>

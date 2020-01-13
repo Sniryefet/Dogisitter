@@ -26,6 +26,9 @@
             android:name=".AdminMainActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ClientTrips"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -38,6 +41,10 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
