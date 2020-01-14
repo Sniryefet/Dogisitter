@@ -17,25 +17,28 @@ public class TripAdapter extends BaseAdapter {
     private Context mContext;//activity
     private LayoutInflater inflater = null;
     private ArrayList<Trip> retTrips;
+    private ArrayList<Trip> filteredTrips;
     private int[] images;
 
-    public TripAdapter(Context context, int[] images, ArrayList<Trip> trips){
+    public TripAdapter(Context context, int[] images, ArrayList<Trip> trips) {
         this.mContext = context;
         this.retTrips = trips;
         this.images = images;
-        inflater = ( LayoutInflater )context.
+        inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.filteredTrips = new ArrayList<>();
+        this.filteredTrips.addAll(retTrips);
 
     }
 
     @Override
     public int getCount() {
-        return retTrips.size();
+        return filteredTrips.size();
     }
 
     @Override
     public Trip getItem(int i) {
-        return retTrips.get(i);
+        return filteredTrips.get(i);
     }
 
     @Override
@@ -54,11 +57,8 @@ public class TripAdapter extends BaseAdapter {
         TextView tDate = (TextView) itemView.findViewById(R.id.dateTripItem);
         TextView tHour = (TextView) itemView.findViewById(R.id.timeTripItem);
 
-        Trip selectedTrip = retTrips.get(position);
+        Trip selectedTrip = filteredTrips.get(position);
         tLogo.setImageResource(images[position % 11]);
-//        Glide.with(mContext)
-//                .load(images[position % 11])
-//                .into(tLogo);
 
         tName.setText(selectedTrip.getTripName());
         tPlace.setText(selectedTrip.getMeetingPlace());
@@ -66,6 +66,21 @@ public class TripAdapter extends BaseAdapter {
         tHour.setText(selectedTrip.getTime());
 
         return itemView;
+    }
+
+    public void filter(String txt) {
+        txt = txt.toLowerCase();
+        filteredTrips.clear();
+        if (txt.length() == 0) {
+            filteredTrips.addAll(retTrips);
+        } else {
+            for (Trip tp : retTrips) {
+                if (tp.getMeetingPlace().toLowerCase().contains(txt)) {
+                    filteredTrips.add(tp);
+                }
+            }
+        }
+        notifyDataSetChanged();
 
 
     }

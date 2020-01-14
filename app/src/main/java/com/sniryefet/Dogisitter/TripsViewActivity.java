@@ -3,7 +3,7 @@ package com.sniryefet.Dogisitter;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.appcompat.widget.SearchView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,11 +31,10 @@ import static com.sniryefet.Dogisitter.LoginActivity.uInfo;
 
 public class TripsViewActivity extends AppCompatActivity {
     private GridView itemView;
-    //    private SearchView searchView;
     private ArrayList<Trip> FilteredTrips;
     private TripAdapter tAdapter;
     private static ArrayList<String> tripsId = new ArrayList<>();
-    final int[] imageIds = {R.drawable.puppy1,
+    final static int[] imageIds = {R.drawable.puppy1,
             R.drawable.puppy2,
             R.drawable.puppy3,
             R.drawable.puppy4,
@@ -51,6 +49,7 @@ public class TripsViewActivity extends AppCompatActivity {
 
     private DatabaseReference refTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,19 +64,19 @@ public class TripsViewActivity extends AppCompatActivity {
                 ArrayList<Trip> trips = pullData(dataSnapshot.child("/Trips"));
                 tAdapter = new TripAdapter(TripsViewActivity.this, imageIds, trips);
                 itemView = (GridView) findViewById(R.id.gridview);
-//                searchView = (SearchView) findViewById(R.id.search_view);
                 itemView.setAdapter(tAdapter);
 
                 // ** On Click item **
-                itemView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                itemView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(TripsViewActivity.this,PopActivity.class);
+                        Intent intent = new Intent(TripsViewActivity.this, PopActivity.class);
                         intent.putExtra("itemView", String.valueOf((GridView) itemView));
-                        intent.putExtra("position",position);
-                        intent.putExtra("key",tripsId.get(position));
+                        intent.putExtra("position", position+"");
+                        intent.putExtra("key", tripsId.get(position));
+                        //intent.putExtra("imageKey",position % 11);
                         finish();
-                        startActivity (intent);
+                        startActivity(intent);
                     }
                 });
 
@@ -88,20 +87,6 @@ public class TripsViewActivity extends AppCompatActivity {
             }
         });
 
-        // ** search bar listener **
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                tAdapter.getFilter().filter(query);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
 
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottom_navigation);
         BottomBarTab dummy = bottomBar.getTabWithId(R.id.dummy_id);
@@ -117,9 +102,9 @@ public class TripsViewActivity extends AppCompatActivity {
                         break;
                     case R.id.ic_progress:
                         Toast.makeText(TripsViewActivity.this, "My trips", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(TripsViewActivity.this,ClientTrips.class);
+                        Intent intent = new Intent(TripsViewActivity.this, ClientTrips.class);
                         finish();
-                        startActivity (intent);
+                        startActivity(intent);
                         break;
                     case R.id.log_out:
                         Toast.makeText(TripsViewActivity.this, "Log out", Toast.LENGTH_SHORT).show();
@@ -129,11 +114,28 @@ public class TripsViewActivity extends AppCompatActivity {
             }
         });
 
-        String user_name = getUser().getName();
-        Log.d("Dogisitter","TripView:    "+ getUser().getName() );
+// ** search bar listener **
+        SearchView searchView = findViewById(R.id.simpleSearchView);
+        searchView.setQueryHint("Search trips by place..");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                tAdapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String text = newText;
+                tAdapter.filter(text);
+                return false;
+            }
+
+        });
+
     }
 
-    public static User getUser(){
+    public static User getUser() {
         return uInfo;
     }
 
@@ -144,10 +146,10 @@ public class TripsViewActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private ArrayList<Trip> pullData(DataSnapshot dataSnapshot){
+    private ArrayList<Trip> pullData(DataSnapshot dataSnapshot) {
         ArrayList<Trip> trips = new ArrayList<>();
         tripsId.clear();
-        for(DataSnapshot ds: dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             Trip trip = ds.getValue(Trip.class);
             trips.add(trip);
             tripsId.add(ds.getKey());

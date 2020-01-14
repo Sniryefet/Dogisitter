@@ -23,7 +23,7 @@
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             app:srcCompat="@drawable/common_full_open_on_phone" />
 
@@ -183,10 +183,9 @@
 
         <Button
             android:id="@+id/profileBtn"
+            android:layout_gravity="center"
             android:layout_width="253dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="154dp"
-            android:layout_marginLeft="154dp"
             android:background="@drawable/button_grad"
             android:onClick="showAdmin"
             android:text="SHOW ADMIN"

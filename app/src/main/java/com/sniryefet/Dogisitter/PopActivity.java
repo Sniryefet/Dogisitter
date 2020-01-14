@@ -3,12 +3,14 @@ package com.sniryefet.Dogisitter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ public class PopActivity extends AppCompatActivity {
     private TextView mCapacity;
     private TextView mLocation;
     private TextView mDescription;
+    private ImageView mTripImage;
     private String tripAdminKey;
     private Set<String> mMyTrips;
     private String mClickedTripKey;
@@ -69,7 +72,9 @@ public class PopActivity extends AppCompatActivity {
         mCapacity=findViewById(R.id.popCapacity);
         mLocation=findViewById(R.id.popLocation);
         mDescription=findViewById(R.id.popDescription);
-
+        mTripImage=findViewById(R.id.imageView5);
+        String position = getIntent().getExtras().getString("position");
+        mTripImage.setImageResource(TripsViewActivity.imageIds[Integer.parseInt(position)%11]);
         //LOAD PAGE DATA
         mClickedTripKey=getIntent().getExtras().getString("key");
         loadData();
