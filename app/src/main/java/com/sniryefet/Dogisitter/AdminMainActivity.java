@@ -46,7 +46,6 @@ public class AdminMainActivity extends AppCompatActivity {
     private static boolean deletingNow = false;
     private DatabaseReference mDatabaseReference;
     private static ArrayList<String> tripsId = new ArrayList<>();
-    private Button deleteTripBtn ;
     private GridView itemView;
     private Set<String> mTripParticipants;
     private BottomBar bottomBar;
@@ -109,9 +108,7 @@ public class AdminMainActivity extends AppCompatActivity {
                             deleteTrip(tripsId.get(position));
                             tAdapter.notifyDataSetChanged();
                             deletingNow = false;
-                            deleteTripBtn.setText("Remove trip");
-
-                            for (int i = 0; i < trips.size(); i++) {
+                            for (int i = 0; i < itemView.getChildCount(); i++) {
                                 itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
                             }
 
@@ -242,7 +239,7 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     public void edit() {
-        for (int i = 0; i < tripsId.size(); i++) {
+        for (int i = 0; i < itemView.getChildCount(); i++) {
             itemView.getChildAt(i).setBackgroundColor(Color.RED);
         }
         deletingNow = true;
