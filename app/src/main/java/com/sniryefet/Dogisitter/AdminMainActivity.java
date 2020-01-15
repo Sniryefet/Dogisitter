@@ -171,7 +171,7 @@ public class AdminMainActivity extends AppCompatActivity {
                         break;
                     case R.id.remove_trip:
                         BottomBarTab rt = bottomBar.findViewById(R.id.remove_trip);
-                        for (int i = 0; i < tripsId.size(); i++) {
+                        for (int i = 0; i < itemView.getChildCount(); i++) {
                             itemView.getChildAt(i).setBackgroundColor(Color.WHITE);
                         }
                         rt.setTitle("Remove trip");
